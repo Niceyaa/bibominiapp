@@ -23,7 +23,7 @@
 			return {
 				headImg: "",
 				nickName: "",
-				loginStatus: false
+				loginStatus: true
 			}
 		},
 		components:{backHeader,noLogin},
@@ -46,8 +46,9 @@
 		onLoad() {
 			if(uni.getStorageSync("loginStatus")){
 				this.loginStatus = true;
+			}else{
+				this.loginStatus = false;
 			}
-			console.log("loginStatus:",this.loginStatus)
 		}
 	}
 </script>

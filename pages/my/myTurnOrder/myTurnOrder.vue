@@ -56,7 +56,7 @@ export default {
 			//               applying 转票中；over 已转出；invalid 已作废
 			// 2resale 待取票；shipped 待收货；geted 已取票； lock 待付款；
 			status: "2resale",
-			loginStatus: false,
+			loginStatus: true,
 			noOrder: true
 		};
 	},
@@ -84,8 +84,9 @@ export default {
 	onLoad() {
 		if(uni.getStorageSync("loginStatus")){
 			this.loginStatus = true;
+		}else{
+			this.loginStatus = false;
 		}
-		console.log("loginStatus:",this.loginStatus)
 	}
 };
 </script>

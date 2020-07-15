@@ -49,7 +49,7 @@ export default {
 		return {
 			artistList: [],
 			visible: true,
-			loginStatus: false,
+			loginStatus: true,
 			noArtist: true,
 			visibleArr: [] // 定义Boolean数组
 		};
@@ -187,10 +187,11 @@ export default {
 		});
 	},
 	onLoad() {
-		if (uni.getStorageSync('loginStatus')) {
+		if(uni.getStorageSync("loginStatus")){
 			this.loginStatus = true;
+		}else{
+			this.loginStatus = false;
 		}
-		console.log('loginStatus:', this.loginStatus);
 	}
 };
 </script>

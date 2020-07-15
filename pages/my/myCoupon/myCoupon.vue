@@ -43,7 +43,7 @@ export default {
 	data() {
 		return {
 			couponList: [],
-			loginStatus: false,
+			loginStatus: true,
 			noCoupon: true
 		};
 	},
@@ -53,10 +53,11 @@ export default {
 	},
 	methods: {},
 	onLoad() {
-		if (uni.getStorageSync('loginStatus')) {
+		if(uni.getStorageSync("loginStatus")){
 			this.loginStatus = true;
+		}else{
+			this.loginStatus = false;
 		}
-		console.log('loginStatus:', this.loginStatus);
 	},
 	onShow() {
 		// 获取优惠券列表数据

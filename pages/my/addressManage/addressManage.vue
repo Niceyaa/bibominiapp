@@ -49,7 +49,7 @@
 		data() {
 			return {
 				addressList: [],
-				loginStatus: false,
+				loginStatus: true,
 				haveAddressList: true
 			};
 		},
@@ -139,8 +139,9 @@
 		onLoad() {
 			if(uni.getStorageSync("loginStatus")){
 				this.loginStatus = true;
+			}else{
+				this.loginStatus = false;
 			}
-			console.log("loginStatus:",this.loginStatus)
 		}
 	};
 </script>

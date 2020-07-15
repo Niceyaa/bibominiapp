@@ -30,7 +30,7 @@
 			return {
 				onoff: false,
 				balanceNum: "0.00",
-				loginStatus: false
+				loginStatus: true
 			}
 		},
 		components:{noLogin,backHeader},
@@ -81,8 +81,9 @@
 		onLoad() {
 			if(uni.getStorageSync("loginStatus")){
 				this.loginStatus = true;
+			}else{
+				this.loginStatus = false;
 			}
-			console.log("loginStatus:",this.loginStatus)
 		}
 	}
 </script>

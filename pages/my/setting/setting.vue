@@ -100,7 +100,7 @@
 					userCard: false,
 					isPwd: false,
 				},
-				loginStatus: false,
+				loginStatus: true,
 				isTel:false
 			};
 		},
@@ -190,6 +190,8 @@
 		onLoad() {
 			if(uni.getStorageSync("loginStatus")){
 				this.loginStatus = true;
+			}else{
+				this.loginStatus = false;
 			}
 			if(uni.getStorageSync("defaultTel")){
 				this.isTel = false;

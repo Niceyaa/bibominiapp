@@ -27,6 +27,7 @@
 				</view>
 			</view>
 		</view>
+		<appAlert @changeAppAlertOnoff="changeOnOff" :appAlertOnoff="onoff"></appAlert>
 	</view>
 	<no-login v-else></no-login>
 </template>
@@ -40,41 +41,9 @@ import backHeader from '../../../components/childheader.vue';
 export default {
 	data() {
 		return {
-			loginStatus: false,
-			wannaSee: [/* 
-				{
-					id: 42,
-					name: '马天宇演唱会',
-					city_name: '重庆市江北区重庆大剧院',
-					poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/QgghL4gEKbTKVYXL2GqN4B7vFjsruAg4FqgSyLoe.jpeg',
-					lower_price: 0,
-					discount: 100,
-					start_at: 1591372800,
-					end_at: 0,
-					venue_id: 1,
-					venue: {
-						id: 1,
-						name: '重庆大剧院',
-						addr: '重庆市江北区重庆大剧院'
-					}
-				},
-				{
-					id: 43,
-					name: '那英演唱会',
-					city_name: '江西宁都UI哦热我',
-					poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/1SO7Gr0g7yd9hay6Yz1WfRWrgVHbYcMjS2SJTZos.jpeg',
-					lower_price: 0,
-					discount: 77,
-					start_at: 1591372700,
-					end_at: 0,
-					venue_id: 2,
-					venue: {
-						id: 2,
-						name: '河北场馆',
-						addr: '江西宁都UI哦热我'
-					}
-				}
-			 */],
+			onoff: false,
+			loginStatus: true,
+			wannaSee: [],
 			noConcert: true
 		};
 	},
@@ -83,8 +52,12 @@ export default {
 		noLogin
 	},
 	methods: {
+		changeOnOff(i) {
+			this.onoff = i;
+		},
 		getTicket(){
 			console.log("跳转购票界面")
+			this.onoff = true;
 		},
 		goToDetail(id){
 			uni.navigateTo({
@@ -110,6 +83,8 @@ export default {
 	onLoad() {
 		if(uni.getStorageSync("loginStatus")){
 			this.loginStatus = true;
+		}else{
+			this.loginStatus = false;
 		}
 	}
 };

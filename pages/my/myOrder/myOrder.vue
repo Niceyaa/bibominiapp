@@ -58,7 +58,7 @@ export default {
 		return {
 			// lock 待付款；payed 待取票；shipped 待收货；geted 已取票
 			status: "payed",
-			loginStatus: false,
+			loginStatus: true,
 			noOrder: true
 		};
 	},
@@ -89,6 +89,8 @@ export default {
 	onLoad() {
 		if(uni.getStorageSync("loginStatus")){
 			this.loginStatus = true;
+		}else{
+			this.loginStatus = false;
 		}
 	}
 };
