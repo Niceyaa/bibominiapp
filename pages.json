@@ -1,0 +1,406 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/all/all",
+			"style": {
+				"navigationBarTitleText": "全部",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/transferticket/transferticket",
+			"style": {
+				"navigationBarTitleText": "转票",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/yanchudetails/yanchudetails",
+			"style": {
+				"navigationBarTitleText": "演出详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/homepage/homepage",
+			"style": {
+				"navigationBarTitleText": "个人主页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/weizhi/weizhi",
+			"style": {
+				"navigationBarTitleText": "位置",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心--常见问题
+		,
+		{
+			"path": "pages/my/commonQuestion/commonQuestion",
+			"style": {
+				"navigationBarTitleText": "常见问题",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心--问题详情
+		,
+		{
+			"path": "pages/my/commonQuestion/answer",
+			"style": {
+				"navigationBarTitleText": "问题详情",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心--想看的演出
+		,
+		{
+			"path": "pages/my/wantToSee/wantToSee",
+			"style": {
+				"navigationBarTitleText": "想看",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/concertArtist/concertArtist",
+			"style": {
+				"navigationBarTitleText": "关注艺人",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myWallet/myWallet",
+			"style": {
+				"navigationBarTitleText": "我的钱包",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myWallet/myBill",
+			"style": {
+				"navigationBarTitleText": "我的账单",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myWallet/myWithdraw",
+			"style": {
+				"navigationBarTitleText": "提现",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myWallet/myInvest",
+			"style": {
+				"navigationBarTitleText": "充值",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/addressManage/addressManage",
+			"style": {
+				"navigationBarTitleText": "地址管理",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/addressManage/addAddress",
+			"style": {
+				"navigationBarTitleText": "新增地址",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myCoupon/myCoupon",
+			"style": {
+				"navigationBarTitleText": "我的优惠券",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/relateService/relateService",
+			"style": {
+				"navigationBarTitleText": "联系客服",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/coopration/coopration",
+			"style": {
+				"navigationBarTitleText": "商务合作",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置
+		,
+		{
+			"path": "pages/my/setting/setting",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-实名认证
+		,
+		{
+			"path": "pages/my/setting/realName",
+			"style": {
+				"navigationBarTitleText": "实名认证",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-安全密码1
+		,
+		{
+			"path": "pages/my/setting/setSafePassword",
+			"style": {
+				"navigationBarTitleText": "安全密码",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-安全密码2
+		,
+		{
+			"path": "pages/my/setting/inputCode",
+			"style": {
+				"navigationBarTitleText": "安全密码",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-安全密码3（设置新密码）
+		,
+		{
+			"path": "pages/my/setting/newPwd",
+			"style": {
+				"navigationBarTitleText": "安全密码",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-安全密码4（设置成功）
+		,
+		{
+			"path": "pages/my/setting/pwdSuccess",
+			"style": {
+				"navigationBarTitleText": "安全密码",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-更换手机号
+		,
+		{
+			"path": "pages/my/setting/changeTel",
+			"style": {
+				"navigationBarTitleText": "号码更换",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-填写新手机号
+		,
+		{
+			"path": "pages/my/setting/newTel",
+			"style": {
+				"navigationBarTitleText": "号码更换",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-银行卡
+		,
+		{
+			"path": "pages/my/setting/bankCard",
+			"style": {
+				"navigationBarTitleText": "银行卡",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-关于我们
+		,
+		{
+			"path": "pages/my/setting/aboutUs",
+			"style": {
+				"navigationBarTitleText": "关于我们",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心-设置-问题反馈
+		,
+		{
+			"path": "pages/my/setting/questionFeedback",
+			"style": {
+				"navigationBarTitleText": "问题反馈",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心--我的订单
+		,
+		{
+			"path": "pages/my/myOrder/myOrder",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"navigationStyle": "custom"
+			}
+		}
+		// 个人中心--登录
+		,
+		{
+			"path": "pages/my/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		// 个人中心--第三方登录之后绑定手机号
+		{
+			"path": "pages/my/login/bindTel",
+			"style": {
+				"navigationBarTitleText": "绑定手机号",
+				"navigationStyle": "custom"
+			}
+		},
+		// 个人中心--修改信息
+		{
+			"path": "pages/my/changeUserInfo/changeUserInfo",
+			"style": {
+				"navigationBarTitleText": "修改信息",
+				"navigationStyle": "custom"
+			}
+		},
+		// 个人中心--设置昵称
+		{
+			"path": "pages/my/changeUserInfo/setName",
+			"style": {
+				"navigationBarTitleText": "设置昵称",
+				"navigationStyle": "custom"
+			}
+		},
+		// 个人中心--设置头像
+		{
+			"path": "pages/my/changeUserInfo/setHeadImg",
+			"style": {
+				"navigationBarTitleText": "我的头像",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myTurnOrder/myTurnOrder",
+			"style": {
+				"navigationBarTitleText": "我的转票",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/myTurnOrder/ticketDetail",
+			"style": {
+				"navigationBarTitleText": "转票详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/newMy",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/my/message/message",
+			"style": {
+				"navigationBarTitleText": "消息通知",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/message/systemMes",
+			"style": {
+				"navigationBarTitleText": "系统消息",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/message/suggestMes",
+			"style": {
+				"navigationBarTitleText": "为您推荐",
+				"navigationStyle": "custom"
+			}
+		},
+		// 订单详情
+		{
+			"path": "pages/my/myOrder/orderDesc",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#1E1E1E",
+		"selectedColor": "#1E1E1E",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/image/tabBar/首页(1).png",
+				"selectedIconPath": "static/image/tabBar/首页.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/all/all",
+				"iconPath": "static/image/tabBar/全部(1).png",
+				"selectedIconPath": "static/image/tabBar/全部.png",
+				"text": "全部"
+			},
+			{
+				"pagePath": "pages/transferticket/transferticket",
+				"iconPath": "static/image/tabBar/转票(1).png",
+				"selectedIconPath": "static/image/tabBar/转票.png",
+				"text": "转票"
+			},
+			{
+				"pagePath": "pages/my/newMy",
+				"iconPath": "static/image/tabBar/我的(1).png",
+				"selectedIconPath": "static/image/tabBar/我的.png",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	},
+	"sitemapLocation": "sitemap.json"
+}
