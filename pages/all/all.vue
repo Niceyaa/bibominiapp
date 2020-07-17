@@ -20,7 +20,7 @@
 
             <!-- 顶部选项卡 -->
             <view class="box">
-                <scroll-view id="nav-bar" class="nav-bar" scroll-x scroll-with-animation :scroll-left="scrollLeft">
+                <scroll-view id="nav-bar" class="nav-bar" show-scrollbar="false" scroll-x scroll-with-animation :scroll-left="scrollLeft">
                     <view v-for="(item,index) in tabBars" :key="item.id" class="nav-item"
                         :class="{current: index === tabCurrentIndex}" :id="'tab'+index" @click="changeTab(index)">
                         {{item.name}}
@@ -792,7 +792,7 @@
             width: 710rpx;
             padding-bottom: 50rpx;
             background-color: white;
-            margin: 150rpx auto 0rpx auto;
+            margin: 190rpx auto 0rpx auto;
             border-radius: 8rpx;
 
 

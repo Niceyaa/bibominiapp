@@ -52,7 +52,7 @@
 				</view>
 			</view>
 
-			<view class="tel-wrapper">
+			<!-- <view class="tel-wrapper">
 				<view class="bank-input-item">
 					<view class="bank-left">预留手机号</view>
 
@@ -83,19 +83,24 @@
 						<view style="color: #C0C0C0;" v-else>重发{{ leftTime }}s</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			<button :class="{ submitBank: true, redBgc: totalFlag }" @click="submitBank">提交</button>
 		</view>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
 <script>
+	import md5 from '../../../tool/md5.js'
+	import errModal from '../../../components/errModal.vue'
 	import backHeader from '../../../components/childheader.vue';
 	import { updateUserInfo } from '../../../Api/myApi/updateUserInfo.js';
-	import { defaultTelCode } from '../../../Api/myApi/defaultTelCode.js';
+	import { sendCode } from '../../../Api/myApi/sendCode.js';
 	export default {
 		data() {
 			return {
+				errMsg:"",
+				showOrNot:false,
 				username: '',
 				usercard: '',
 				userbank: '',
@@ -106,20 +111,22 @@
 				sendFlag: false,
 				nameFlag: false,
 				cardNoFlag: false,
-				telFlag: false
+				telFlag: false,
+				leftTimeId: ''
 			};
 		},
 		computed: {
 			totalFlag() {
-				return this.username.length > 1 && this.usercard.length > 18 && this.userbank.length > 0 && this.usertel.length > 10 && this.verifyCode.length > 3;
+				return this.username.length > 1 && this.usercard.length > 18 && this.userbank.length > 0;
 			}
 		},
 		components: {
-			backHeader
+			backHeader,
+			errModal
 		},
 		watch: {
 			leftTime(val) {
-				if (val === 0) {
+				if (val === 1) {
 					clearInterval(this.leftTimeId);
 					this.sendFlag = false;
 				}
@@ -130,28 +137,66 @@
 			usercard() {
 				this.cardNoFlag = false;
 			},
-			userTel() {
+			usertel() {
+				console.log("我在改变嘛")
 				this.telFlag = false;
 			}
 		},
 		methods: {
+			random8Str(){
+				let chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789";
+				let len = chars.length;
+				let randomStr = "";
+				for (var i = 0; i < 8; i++) {
+					let r = chars[Math.floor(Math.random()*len)];
+					randomStr += r;
+				}
+				return randomStr;
+			},
+			formatDate (){
+				let dd = new Date();
+				let y = dd.getFullYear();
+				let m = (dd.getMonth()+1).toString().padStart(2,"0");
+				let d = dd.getDate().toString().padStart(2,"0");
+				let h = dd.getHours().toString().padStart(2,"0");
+				let min = dd.getMinutes().toString().padStart(2,"0");
+				let s = dd.getSeconds().toString().padStart(2,"0");
+				return y+m+d+h+min+s;
+			},
 			chooseBank(e) {
 				this.userbank = this.bankList[e.detail.value];
 			},
 			getCode() {
-				defaultTelCode({
-					is_check: 1
+				let str = this.random8Str();
+				let dt = this.formatDate();
+				let sign = `${this.usertel}bi354bo${dt}${str}`;
+				sendCode({
+					tel:this.usertel,
+					datetime:dt,
+					nonce_str:str,
+					sign:md5(sign)
 				}).then(res => {
-					this.leftTime = 60;
-					this.sendFlag = true;
-					this.leftTimeId = setInterval(() => {
-						this.leftTime--;
-					}, 1000);
+					console.log("res:",res);
+					if(res[1].data.err_msg === "短信发送成功！" ){
+						// 短信发送成功
+						this.leftTime = 60;
+						this.sendFlag = true;
+						this.leftTimeId = setInterval(() => {
+							this.leftTime--;
+						}, 1000);
+					}else{
+						this.errMsg = res[1].data.err_msg;
+						this.showOrNot = true;
+					}
+					
 				});
 			},
 			submitBank() {
+				console.log(1111)
 				let nameReg = /^[\u4E00-\u9FA5]{2,4}$/;
-				if (nameReg.test(this.username) && this.usercard.length > 15 && this.userbank > 0 && this.usertel.length === 11 && this.verifyCode.length === 4) {
+				
+				// if (nameReg.test(this.username) && this.usercard.length > 15 && this.userbank.length > 0 && this.usertel.length === 11 && this.verifyCode.length === 4) {
+					if (nameReg.test(this.username) && this.usercard.length > 15 && this.userbank.length > 0) {
 					console.log("完全匹配")
 
 
@@ -159,16 +204,21 @@
 						bank_name: this.username,
 						bank_no: this.usercard,
 						bank_info: this.userbank,
-						code: this.verifyCode,
-						tel: this.usertel
+					/* 	code: this.verifyCode,
+						tel: this.usertel */
 					}).then(res => {
-						if (res[1].data.err_code === 0) {
+						console.log(res)
+						if (res[1].data.err_msg === "银行卡信息绑定成功！") {
 							uni.showToast({
-								title: '银行卡绑定成功'
+								title: '银行卡绑定成功',
+								duration:1500
 							});
 							uni.navigateTo({
 								url: '/pages/my/setting/setting'
 							});
+						}else{
+							this.errMsg = res[1].data.err_msg;
+							this.showOrNot = true;
 						}
 					});
 
@@ -186,7 +236,7 @@
 						duration: 1000
 					})
 				}
-				if (!this.userTel || this.userTel.length < 11) {
+				/* if (!this.usertel || this.usertel.length < 11) {
 					this.telFlag = true;
 				}
 				if (!this.verifyCode || this.verifyCode.length < 4) {
@@ -196,7 +246,7 @@
 						icon: "none",
 						duration: 2000
 					})
-				}
+				} */
 			}
 		}
 	};

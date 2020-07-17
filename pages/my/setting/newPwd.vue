@@ -16,15 +16,19 @@
 			<input @input="inputHandle" class="real-input" type="number" maxlength="6" />
 			<button :class="{'next-step':true,'redBgc':inputFlag}" @click="setPwd">确定</button>
 		</view>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
 <script>
+import errModal from "../../../components/errModal.vue"
 import backHeader from '../../../components/childheader.vue';
 import { updatePayPwd } from "../../../Api/myApi/updatePayPwd.js"
 export default {
 	data() {
 		return {
+			errMsg: '',
+			showOrNot: false,
 			pwdCode: '',
 			inputFlag: false,
 			v1: '',
@@ -108,7 +112,8 @@ export default {
 		this.old = opt.old;
 	},
 	components: {
-		backHeader
+		backHeader,
+		errModal
 	},
 	methods: {
 		setPwd() {
@@ -116,17 +121,11 @@ export default {
 				balance_passwd: this.pwdCode,
 				old_balance_passwd: this.old
 			}).then(res=>{
-				if(res[1].data.err_msg === "老密码填写错误；请确认！"){
-					uni.showToast({
-						title:res[1].data.err_msg,
-						icon:"none",
-						duration:1000
-					})
-					
+				/* if(res[1].data.err_msg === "老密码填写错误；请确认！"){
 					setTimeout(()=>{
 						uni.navigateBack();
 					},1000)
-				}
+				} */
 				
 				console.log(res)
 				if(res[1].data.err_msg === "密码修改成功！"){
@@ -138,6 +137,9 @@ export default {
 					uni.navigateTo({
 						url: '/pages/my/setting/pwdSuccess'
 					});
+				}else {
+					this.errMsg = res[1].data.err_msg;
+					this.showOrNot = true;
 				}
 				
 			})

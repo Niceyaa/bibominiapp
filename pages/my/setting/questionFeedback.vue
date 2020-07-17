@@ -36,6 +36,7 @@
 					feedback({
 						content: this.feedbackInfo
 					}).then(res=>{
+						console.log("res",res)
 						uni.showToast({
 							title:"谢谢您的反馈！"
 						})

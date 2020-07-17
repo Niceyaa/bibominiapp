@@ -246,12 +246,13 @@
             }
 
             .border {
-                width: 45upx;
-                height: 18upx;
-                background: linear-gradient(90deg, rgba(237, 24, 41, 1) 0%, rgba(34, 34, 34, 1) 100%);
-                margin-left: 50rpx;
-                margin-top: -20rpx;
-
+                width: 50upx;
+                height: 8upx;
+                -background: linear-gradient(90deg, rgba(237, 24, 41, 1) 0%, rgba(34, 34, 34, 1) 100%);
+                margin-left: 20rpx;
+                margin-top: -6rpx;
+				background: #FF4657;
+				border-radius: 6upx;
             }
         }
 

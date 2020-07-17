@@ -68,7 +68,7 @@ export default {
 			let that = this;
 			uni.showModal({
 				title: '取消关注',
-				content: '您确认取消关注该艺人嘛！',
+				content: '您确认将该艺人从您的关注列表中移除吗？',
 				success(sureRes) {
 					if (sureRes.confirm) {
 						operateActor({
@@ -80,7 +80,8 @@ export default {
 								title: res[1].data.err_msg,
 								icon: 'none'
 							});
-							that.$set(that.visibleArr, item.index, false);
+							// 动态更新visibleArr和关注列表
+							that.$set(that.visibleArr, that.visibleArr.splice(item.index,1));
 							that.$set(that.artistList, that.artistList.splice(item.index, 1));
 							if (that.artistList.length < 1) {
 								that.noArtist = false;

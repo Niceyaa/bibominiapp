@@ -33,23 +33,31 @@
 			<view class="detail-content">
 				<view class="flex-wrapper">
 					<view class="left-desc">
-						<view class="detail-name">{{ orderData.concert.name }}—【{{ orderData.concert.city_name }}站】</view>
+						<view class="detail-name">{{ orderData.concert.name }} —【{{ orderData.concert.city_name }}站】</view>
 						<view class="detail-time">{{ orderData.concert_time.start_at }}</view>
 						<view class="detail-time">{{ orderData.venue.addr }}</view>
 					</view>
 					<view class="right-desc"><image :src="orderData.concert.poster" mode=""></image></view>
 				</view>
 
-				<view class="all-tickets">
-					<view class="item" v-for="(item, i) in 3" :key="i">
-						<view>A区</view>
-						<view>12排11座</view>
-						<view>￥999.00</view>
-					</view>
-				</view>
+				
 				<view class="tickets-price">
-					<view>票面{{ orderData.price }}元</view>
-					<view>x{{ orderData.num }}</view>
+					<view class="tickets-top">
+						<view>
+						{{ orderData.price }}票面
+						<text style="color: #b2b2b2;padding-left: 14upx;">({{orderData.price}}元)</text>
+						</view>
+						<view>x{{ orderData.num }}</view>
+					</view>
+					<view class="tickets-top">
+						<view>
+							优惠
+						</view>
+						<view>
+							-{{orderData.discounted_money}}元
+						</view>
+					</view>
+					
 				</view>
 				<view class="total-price">总计：{{ orderData.money }}元</view>
 			</view>
@@ -81,7 +89,6 @@
 </template>
 
 <script>
-import { formatDate } from '../../../common/formatDate.js';
 import { orderDesc } from '../../../Api/myApi/orderDesc.js';
 import { orderOperate } from '../../../Api/myApi/orderOperate.js';
 import myModal from './myModal.vue';
@@ -96,82 +103,81 @@ export default {
 			order_id: '',
 			status: '',
 			orderData: {
-				/* id: 95,
-				concert_id: 78,
-				concert_time_id: 109,
-				concert_ticket_id: 97,
-				user_id: 100017,
-				user_money_log_id: 49,
-				user_coupon_id: 0,
-				coupon_money: 0,
-				price: 100,
-				num: 5,
-				discount: 100,
-				balance_pay: 500,
-				money: 500,
-				status: 'payed',
-				updated_at: 1592967114,
-				created_at: 1592966274,
-				out_trade_no: '',
-				payment_no: null,
-				payment_time: null,
-				type: 'balance',
-				resale_status: 'over',
-				resale_num: 2,
-				concert: {
-					id: 78,
-					name: '法语音乐剧《摇滚红与黑》现场演出成 都站首秀舞台演出',
-					city_name: '重庆',
-					poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/ppGsjRte7B4NasWd9SjJ9jALzg5oVI2IOBC3CWnJ.png',
-					venue_id: 1
-				},
-				concert_time: {
-					id: 109,
-					start_at: 1593446400
-				},
-				concert_ticket: {
-					id: 97,
-					name: '票面名称',
-					resale_price_lower: 0,
-					resale_price_upper: 0,
-					resale_price: 1200
-				},
-				order_addr: {
-					id: 1,
-					order_id: 1,
-					name: '1000000',
-					tel: '8',
-					addr: '700000',
-					status: 0
-				},
-				venue: {
-					id: 1,
-					name: '重庆大剧院',
-					addr: '重庆市江北区重庆大剧院'
-				},
-				resale_ticket: [
-					{
-						id: 36,
-						price: 1200,
-						total: 2,
-						bought_num: 2,
-						remain_num: 0,
-						created_at: 1592966306,
-						status: 'over'
-					},
-					{
-						id: 37,
-						price: 1200,
-						total: 1,
-						bought_num: 0,
-						remain_num: 1,
-						created_at: 1592969004,
-						status: 'apply'
-					}
-				],
-				discounted_money: 500,
-				expire_in: 0 */
-			}
+        "id":95,
+        "concert_id":78,
+        "concert_time_id":109,
+        "concert_ticket_id":97,
+        "user_id":100017,
+        "user_money_log_id":49,
+        "user_coupon_id":0,
+        "coupon_money":0,
+        "price":100,
+        "num":5,
+        "discount":100,
+        "balance_pay":500,
+        "money":500,
+        "status":"payed",
+        "updated_at":1592967114,
+        "created_at":1592966274,
+        "out_trade_no":"",
+        "payment_no":null,
+        "payment_time":null,
+        "type":"balance",
+        "resale_status":"over",
+        "resale_num":2,
+        "concert":{
+            "id":78,
+            "name":"法语音乐剧《摇滚红与黑》现场演出成 都站首秀舞台演出",
+            "city_name":"重庆",
+            "poster":"https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/ppGsjRte7B4NasWd9SjJ9jALzg5oVI2IOBC3CWnJ.png",
+            "venue_id":1
+        },
+        "concert_time":{
+            "id":109,
+            "start_at":1593446400
+        },
+        "concert_ticket":{
+            "id":97,
+            "name":"票面名称",
+            "resale_price_lower":0,
+            "resale_price_upper":0,
+            "resale_price":1200
+        },
+        "order_addr": {
+            "id": 1,
+            "order_id": 1,
+            "name": "1000000",
+            "tel": "8",
+            "addr": "700000",
+            "status": 0
+        },
+        "venue":{
+            "id":1,
+            "name":"重庆大剧院",
+            "addr":"重庆市江北区重庆大剧院"
+        },
+        "resale_ticket":[
+            {
+                "id":36,
+                "price":1200,
+                "total":2,
+                "bought_num":2,
+                "remain_num":0,
+                "created_at":1592966306,
+                "status":"over"
+            },
+            {
+                "id":37,
+                "price":1200,
+                "total":1,
+                "bought_num":0,
+                "remain_num":1,
+                "created_at":1592969004,
+                "status":"apply"
+            }],
+        "discounted_money":500,
+        "expire_in":0
+    }
 		}
 	},
 	components: { myModal },
@@ -186,12 +192,25 @@ export default {
 				order_id: this.order_id
 			}).then(res => {
 				console.log(res);
-				this.orderData = res[1].data.data;
-				this.orderData.concert_time.start_at = formatDate(this.orderData.concert_time.start_at);
+				// this.orderData = res[1].data.data;
+				this.orderData.concert_time.start_at = this.formatDate(this.orderData.concert_time.start_at,".")
+				this.orderData.created_at = this.formatDate(this.orderData.created_at,'-');
 			});
 		}
 	},
 	methods: {
+		formatDate(t,stu) {
+			let dd = new Date(t);
+			let y = dd.getFullYear();
+			let m = (dd.getMonth()+1).toString().padStart(2,"0");
+			let d = dd.getDate().toString().padStart(2,"0");
+			let h = dd.getHours().toString().padStart(2,"0");
+			let min = dd.getMinutes().toString().padStart(2,"0");
+			if(stu === "."){
+				return `${y}.${m}.${d} ${h}:${min}`;
+			}
+			return `${y}-${m}-${d} ${h}:${min}`;
+		},
 		changeOnOff(i) {
 			this.onoff = i;
 		},
@@ -312,9 +331,9 @@ page {
 					.left-desc {
 						color: #656565;
 						font-size: 24upx;
-
+						width: 480upx;
 						.detail-name {
-							padding: 12upx 0 38upx 0;
+							padding: 0upx 0 18upx 0;
 							color: #212121;
 							font-size: 28upx;
 							font-weight: 600;
@@ -358,14 +377,18 @@ page {
 			}
 
 			.tickets-price {
-				padding: 30upx 0;
+				margin-top: 40upx;
+				padding: 30upx 0 0 0;
 				background-color: #ffffff;
-				display: flex;
-				justify-content: space-between;
 				color: #656565;
 				font-size: 24upx;
 				border-bottom: 1px solid #f5f5f5;
-				align-items: center;
+				border-top: 1px solid #f5f5f5;
+				.tickets-top{
+					display: flex;
+					justify-content: space-between;
+					padding-bottom: 30upx;
+				}
 			}
 
 			.total-price {

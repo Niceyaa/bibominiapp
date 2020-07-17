@@ -14,19 +14,23 @@
 				<view @click="chooseImg" class="change-btn">更换</view>
 			</view>
 		</view>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
 <script>
-	import { Base64 } from '../../../common/Base64.js'
+	import errModal from '../../../components/errModal.vue'
 	import { fileUpload } from "../../../Api/myApi/fileUpload.js"
 	import { updateUserInfo } from "../../../Api/myApi/updateUserInfo.js"
 	export default {
 		data() {
 			return {
+				errMsg:'',
+				showOrNot:false,
 				preSrc: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1591079014819&di=11933c0b48403bb5b92138b25b4c6711&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F14%2F75%2F01300000164186121366756803686.jpg"
 			}
 		},
+		components:{errModal},
 		methods: {
 			back() {
 				var pages = getCurrentPages();
@@ -45,11 +49,7 @@
 					sourceType: ['camera','album'],
 					sizeType:'original',
 					success(res) {
-						console.log(res)
-						console.log(res.tempFiles[0].path)
-						console.log(res.tempFilePaths)
 						let resPath = res.tempFilePaths[0];
-						let nowPath = Base64.encode(resPath).toString();
 						uni.uploadFile({
 							url:"https://ticket.zmr029.com/api/operate/comm_upload/file",
 							filePath:resPath,
@@ -66,7 +66,7 @@
 								updateUserInfo({
 									img:fileImg
 								}).then(upres=>{
-									if (upres[1].data.err_code === 0) {
+									if (upres[1].data.err_msg === "用户信息更新成功！") {
 										uni.setStorageSync("headImg", upres[1].data.data.img);
 										uni.showToast({
 											title: "更换成功",
@@ -78,6 +78,9 @@
 											})
 										},1000)
 										
+									}else{
+										this.errMsg = upres[1].data.err_msg;
+										this.showOrNot = true;
 									}
 								})
 							},

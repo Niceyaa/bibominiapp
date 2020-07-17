@@ -2,7 +2,8 @@
 	<view class="common-order">
 		<view class="order-item" v-for="item in turnDetail" :key="item.id">
 			<view class="order-header">
-				<view class="header-left">订单编号：{{ item.order.out_trade_no }}</view>
+				<view v-if="status === '2resale'" class="header-left">订单编号：{{ item.out_trade_no }}</view>
+				<view v-else class="header-left">订单编号：{{ item.order.out_trade_no }}</view>
 				<view v-if="status === '2resale'" class="header-right">待转票</view>
 				<view v-if="status === 'applying'" class="header-right">转票中</view>
 				<view v-if="status === 'invalid'" class="header-right">已作废</view>
@@ -11,14 +12,16 @@
 			<view class="order-content" @click="goToTicketDetail(item.id)">
 				<image :src="item.concert.poster" mode=""></image>
 				<view class="content-right">
-					<view class="order-name">【{{ item.concert.city_name  }}站】{{ item.concert.name }}</view>
+					<view class="order-name">【{{ item.concert.city_name }}站】{{ item.concert.name }}</view>
 					<view class="order-desc">时间：{{ item.concert_time.start_at }}</view>
 					<view class="order-desc">地点：{{ item.venue.addr }}</view>
-					<view class="order-desc">数量：{{ item.order.num }}张</view>
+					<view v-if="status === '2resale'" class="order-desc">数量：{{ item.num }}张</view>
+					<view v-else class="order-desc">数量：{{ item.order.num }}张</view>
 				</view>
 			</view>
 			<view class="order-bottom">
-				<view class="totalPrice">总计：{{ item.order.num*item.price }}元</view>
+				<view v-if="status === '2resale'" class="totalPrice">总计：{{ item.price * item.num }}元</view>
+				<view v-else class="totalPrice">总计：{{ item.order.num * item.price }}元</view>
 				<!-- 待取票 -->
 				<view v-if="status === '2resale'" class="user-operate">
 					<view class="get-ticket" @click="goToGetTicket(item.id)">我要取票</view>
@@ -39,86 +42,27 @@
 </template>
 
 <script>
-import { formatDate } from "../../../common/formatDate.js"
+import { formatDate } from '../../../common/formatDate.js';
 import myModal from './myModal.vue';
-import { turnOrderList } from '../../../Api/myApi/turnOrderList.js'
+import { turnOrderList } from '../../../Api/myApi/turnOrderList.js';
 import { orderList } from '../../../Api/myApi/orderList.js';
 export default {
 	data() {
 		return {
-			onoff:false,
-			orderId:"",
+			onoff: false,
+			orderId: '',
 			modalFlag: false,
-			cancelModalFlag:false,
-			deleteModalFlag:false,
-			turnDetail: []
+			cancelModalFlag: false,
+			deleteModalFlag: false,
 		};
 	},
 	props: {
 		status: {
-			type: String,
+			type: String
+		},
+		turnDetail:{
+			type: Array
 		}
-	},
-	watch:{
-		/* status(stu){
-			console.log("watch执行",stu);
-			switch (stu) {
-				// 待取票
-				case '2resale':
-					turnOrderList({
-						status: stu
-					}).then(res => {
-						console.log(res)
-						this.turnDetail = res[1].data.data;
-						this.turnDetail.forEach(item=>{
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
-						})
-					});
-					console.log(stu);
-					break;
-				// 转票中
-				case 'applying':
-					turnOrderList({
-						status: stu
-					}).then(res => {
-						console.log(res)
-						this.turnDetail = res[1].data.data;
-						this.turnDetail.forEach(item=>{
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
-						})
-					});
-					console.log(stu);
-					break;
-				// 已转出
-				case 'over':
-					turnOrderList({
-						status: stu
-					}).then(res => {
-						console.log(res)
-						this.turnDetail = res[1].data.data;
-						this.turnDetail.forEach(item=>{
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
-						})
-					});
-					console.log(stu);
-					break;
-				// 已作废
-				case 'invalid':
-					turnOrderList({
-						status: stu
-					}).then(res => {
-						console.log(res)
-						this.turnDetail = res[1].data.data;
-						this.turnDetail.forEach(item=>{
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
-						})
-					});
-					console.log(stu);
-					break;
-			}
-			this.$emit("isNull",this.turnDetail)	
-		} */
-	
 	},
 	components: { myModal },
 	methods: {
@@ -127,16 +71,16 @@ export default {
 		},
 		// 待取票--订单详情
 		goToTicketDetail(id) {
-			console.log("status",this.$props.status)
-			this.onoff = true;
-			/* this.orderId = id;
+			/* console.log('status', this.$props.status);
+			this.onoff = true; */
+			this.orderId = id;
 			uni.navigateTo({
 				url: `/pages/my/myTurnOrder/ticketDetail?id=${this.orderId}&status=${this.$props.status}`
-			}); */
+			});
 		},
 		// 我的票卷--我要取票
 		goToGetTicket(id) {
-		/* 	this.orderId = id;
+			/* 	this.orderId = id;
 			console.log('点我去我要取票！'); */
 			this.onoff = true;
 		},
@@ -163,82 +107,12 @@ export default {
 			this.onoff = true;
 		}
 	},
-	mounted() {
-		let stu = this.$props.status;
-		switch (stu) {
-			// 待转票
-			case '2resale':
-			
-			console.log("转票mounted")
-				orderList({
-					status: stu
-				}).then(res => {
-					console.log(res)
-					this.turnDetail = res[1].data.data;
-					this.turnDetail.forEach(item=>{
-						item.concert_time.start_at = formatDate(item.concert_time.start_at);
-					})
-					this.$emit("isNull",this.turnDetail)
-				});
-				console.log(stu);
-				break;
-			// 转票中
-			case 'applying':
-			
-			console.log("转票mounted")
-				turnOrderList({
-					status: stu
-				}).then(res => {
-					console.log(res)
-					this.turnDetail = res[1].data.data;
-					this.turnDetail.forEach(item=>{
-						item.concert_time.start_at = formatDate(item.concert_time.start_at);
-					})
-					this.$emit("isNull",this.turnDetail)
-				});
-				console.log(stu);
-				break;
-			// 已转出
-			case 'over':
-			
-			console.log("转票mounted")
-				turnOrderList({
-					status: stu
-				}).then(res => {
-					console.log(res)
-					this.turnDetail = res[1].data.data;
-					this.turnDetail.forEach(item=>{
-						item.concert_time.start_at = formatDate(item.concert_time.start_at);
-					})
-					this.$emit("isNull",this.turnDetail)
-				});
-				console.log(stu);
-				break;
-			// 已作废
-			case 'invalid':
-				
-				console.log("转票mounted")
-					turnOrderList({
-						status: stu
-					}).then(res => {
-						console.log(res)
-						this.turnDetail = res[1].data.data;
-						this.turnDetail.forEach(item=>{
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
-						})
-						this.$emit("isNull",this.turnDetail)
-					});
-					console.log(stu);
-					break;
-			}
-		
-	}
-}
+};
 </script>
 
 <style lang="less">
 .common-order {
-	background-color: #F6F6F6;
+	background-color: #f6f6f6;
 	.order-item {
 		background-color: #fff;
 		margin-top: 30upx;

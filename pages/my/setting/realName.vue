@@ -22,6 +22,7 @@
 			</view>
 			<button v-if="totalFlag" style="background:#FF4657;" class="submitInfo" @click="submitInfo">已完成</button>
 			<button v-else class="submitInfo" disabled>提交</button>
+			<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 		</view>
 	</view>
 </template>
@@ -32,6 +33,8 @@ import { updateUserInfo } from '../../../Api/myApi/updateUserInfo.js';
 export default {
 	data() {
 		return {
+			errMsg:"",
+			showOrNot:false,
 			nameFlag: false,
 			numFlag: false,
 			userName: '',
@@ -70,16 +73,18 @@ export default {
 				name: this.userName
 			}).then(res => {
 				let data = res[1].data.data;
-				if (res[1].data.err_code === 0) {
-					console.log('bangdingchenggong ');
+				if (res[1].data.err_msg === "用户信息更新成功！") {
+					console.log('实名认证',res);
 					uni.showToast({
 						title: '实名信息绑定成功'
 					});
 					uni.navigateTo({
 						url: '/pages/my/setting/setting'
 					});
+				}else{
+					this.errMsg = res[1].data.err_msg;
+					this.showOrNot = true;
 				}
-				console.log(res);
 			});
 		}
 	}

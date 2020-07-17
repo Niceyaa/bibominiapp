@@ -20,6 +20,7 @@
 			<button v-if="!isPwd" :class="{'next-step':true,'redBgc':inputFlag}" @click="next">确定</button>
 			<button v-else :class="{'next-step':true,'redBgc':inputFlag}" @click="next">下一步</button>
 		</view>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
@@ -29,6 +30,8 @@ import { updatePayPwd } from "../../../Api/myApi/updatePayPwd.js"
 export default {
 	data() {
 		return {
+			errMsg: '',
+			showOrNot: false,
 			pwdCode: '',
 			inputFlag: false,
 			v1: '',
@@ -137,19 +140,19 @@ export default {
 						code: this.vCode,
 						balance_passwd: this.pwdCode
 					}).then(res=>{
-						if(res[1].data.err_msg === "密码设置成功！");
-						uni.navigateTo({
-							url:"/pages/my/setting/pwdSuccess"
-						})
 						console.log("设置密码",res)
+						if(res[1].data.err_msg === "密码设置成功！"){
+							uni.navigateTo({
+								url:"/pages/my/setting/pwdSuccess"
+							})
+						}else{
+							this.errMsg = res[1].data.err_msg;
+							this.showOrNot = true;
+						}
 					})
-					/* uni.navigateTo({
-						url:"/pages/my/setting/pwdSuccess"
-					}) */
 					return
 				}
 			}
-			console.log(222)
 			return;
 		},
 		inputHandle(e) {
@@ -170,6 +173,7 @@ page {
 	.input-code {
 		height: 100%;
 		background: #f6f6f6;
+		position: relative;
 		.input-code-main {
 			padding-top: 140upx;
 			font-size: 28upx;

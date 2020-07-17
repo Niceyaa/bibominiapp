@@ -33,10 +33,10 @@
 			<view class="detail-content">
 				<view class="flex-wrapper">
 					<view class="left-desc">
-						<view class="detail-name">《{{ orderDetail.name }}》-{{ orderDetail.resale_apply.concert_addr }}
+						<view class="detail-name">《{{ orderDetail.concert.name }}》- {{ orderDetail.resale_apply.concert_addr }}
 						</view>
 						<view class="detail-time">{{ orderDetail.resale_apply.concert_time }}</view>
-						<view class="detail-time">{{ orderDetail.concert.city_name }}市 {{ orderDetail.venue.name }}
+						<view class="detail-time">{{ orderDetail.resale_apply.concert_addr }}
 						</view>
 					</view>
 					<view class="right-desc">
@@ -44,16 +44,29 @@
 					</view>
 				</view>
 
-				<view class="all-tickets">
+				<!-- <view class="all-tickets">
 					<view class="item" v-for="(item, i) in 3" :key="i">
 						<view>A区</view>
 						<view>12排11座</view>
 						<view>￥999.00</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="tickets-price">
-					<view>票面{{ orderDetail.price }}元</view>
-					<view>x{{ orderDetail.total }}</view>
+					<view class="tickets-top">
+						<view>
+						{{ orderDetail.price }}票面
+						<text style="color: #b2b2b2;padding-left: 14upx;">({{orderDetail.price}}元)</text>
+						</view>
+						<view>x{{ orderDetail.total }}</view>
+					</view>
+					<view v-if="orderDetail.discounted_money" class="tickets-top">
+						<view>
+							优惠
+						</view>
+						<view>
+							-{{orderDetail.discounted_money}}元
+						</view>
+					</view>
 				</view>
 				<view class="total-price">总计：{{ orderDetail.price * orderDetail.total }}元</view>
 			</view>
@@ -66,7 +79,7 @@
 			</view>
 			<view class="order-wrapper">
 				<view>下单时间</view>
-				<view>2020-06-06 06:33</view>
+				<view>{{orderDetail.concert_time.start_at}}</view>
 			</view>
 		</view>
 		<view class="bottom-tab">
@@ -93,48 +106,48 @@
 			return {
 				onoff:false,
 				orderDetail: {
-					/* id: 1,
-					resale_apply_id: 1,
-					concert_id: 44,
-					concert_time_id: 92,
-					concert_ticket_id: 58,
-					start_at: 1590826210,
-					order_id: 0,
-					name: '周杰伦演唱会',
-					price: 1000000,
-					total: 2,
-					bought_num: 10,
-					remain_num: 5,
-					user_id: 100004,
-					status: 'apply',
-					updated_at: 1590653171,
-					created_at: 1588931667,
-					resale_apply: {
-						id: 1,
-						concert_name: '演出名称',
-						concert_time: '演出时间',
-						ticket_info: '票信息',
-						concert_addr: '演出地址',
-						desc: '转票详情1111',
-						waybill_num: 'bc12312312312313'
-					},
-					concert: {
-						id: 44,
-						name: '吴亦凡演唱会',
-						city_name: '北京',
-						poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-						venue_id: 3
-					},
-					concert_time: {
-						id: 92,
-						start_at: 1591361760
-					},
-					venue: {
-						id: 3,
-						name: '北京场馆',
-						addr: '北京石景山'
-					} */
-				},
+        "id": 1,
+        "resale_apply_id": 1,
+        "concert_id": 44,
+        "concert_time_id": 92,
+        "concert_ticket_id": 58,
+        "start_at": 1590826210,
+        "order_id": 0,
+        "name": "周杰伦演唱会",
+        "price": 1000000,
+        "total": 2,
+        "bought_num": 10,
+        "remain_num": 5,
+        "user_id": 100004,
+        "status": "apply",
+        "updated_at": 1590653171,
+        "created_at": 1588931667,
+        "resale_apply": {
+            "id": 1,
+            "concert_name": "演出名称",
+            "concert_time": "演出时间",
+            "ticket_info": "票信息",
+            "concert_addr": "演出地址",
+            "desc": "转票详情1111",
+            "waybill_num": "bc12312312312313"
+        },
+        "concert": {
+            "id": 44,
+            "name": "吴亦凡演唱会",
+            "city_name": "北京",
+            "poster": "https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg",
+            "venue_id": 3
+        },
+        "concert_time": {
+            "id": 92,
+            "start_at": 1591361760
+        },
+        "venue": {
+            "id": 3,
+            "name": "北京场馆",
+            "addr": "北京石景山"
+        }
+    },
 				status: "",
 				modalFlag: false,
 				cancelModalFlag: false,
@@ -143,6 +156,18 @@
 		},
 		components: { myModal },
 		methods: {
+			formatDate(t,stu) {
+				let dd = new Date(t);
+				let y = dd.getFullYear();
+				let m = (dd.getMonth()+1).toString().padStart(2,"0");
+				let d = dd.getDate().toString().padStart(2,"0");
+				let h = dd.getHours().toString().padStart(2,"0");
+				let min = dd.getMinutes().toString().padStart(2,"0");
+				if(stu === "."){
+					return `${y}.${m}.${d} ${h}:${min}`;
+				}
+				return `${y}-${m}-${d} ${h}:${min}`;
+			},
 			changeOnOff(i) {
 				this.onoff = i;
 			},
@@ -181,8 +206,9 @@
 				resale_id:this.orderId
 			}).then(res=>{
 				console.log("转票详情",res)
-				this.orderDetail = res[1].data.data;
-				this.orderDetail.concert_time.start_at = formatDate(this.orderDetail.concert_time.start_at)
+				// this.orderDetail = res[1].data.data;
+				this.orderDetail.resale_apply.concert_time = this.formatDate(this.orderDetail.resale_apply.concert_time,'.')
+				this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,"-")
  				console.log("转票详情",res)
 			})
 		}
@@ -267,7 +293,7 @@
 							font-size: 24upx;
 
 							.detail-name {
-								padding: 12upx 0 38upx 0;
+								padding: 0upx 0 18upx 0;
 								color: #212121;
 								font-size: 28upx;
 								font-weight: 600;
@@ -311,14 +337,18 @@
 				}
 
 				.tickets-price {
-					padding: 30upx 0;
+					margin-top: 40upx;
+					padding: 30upx 0 0 0;
 					background-color: #ffffff;
-					display: flex;
-					justify-content: space-between;
 					color: #656565;
 					font-size: 24upx;
-					border-bottom: 1px solid #F5F5F5;
-					align-items: center;
+					border-bottom: 1px solid #f5f5f5;
+					border-top: 1px solid #f5f5f5;
+					.tickets-top{
+						display: flex;
+						justify-content: space-between;
+						padding-bottom: 30upx;
+					}
 				}
 
 				.total-price {

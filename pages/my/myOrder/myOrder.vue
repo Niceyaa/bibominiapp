@@ -4,39 +4,24 @@
 		<view class="my-order-main">
 			<view class="order-navigator">
 				<view class="header-wrapper" @click="changeOrderStatus('payed')">
-					
-						<view :class="{'navigator-title':true,clicked:status === 'payed'}">待取票</view>
-						
-					<view class="litter-wrapper">
-						<view v-if="status === 'payed'" class="red-sign"></view>
-					</view>
-					
+					<view :class="{ 'navigator-title': true, clicked: status === 'payed' }">待取票</view>
+
+					<view class="litter-wrapper"><view v-if="status === 'payed'" class="red-sign"></view></view>
 				</view>
 				<view class="header-wrapper" @click="changeOrderStatus('shipped')">
-					<view :class="{'navigator-title':true,clicked:status === 'shipped'}">待收货</view>
-					<view class="litter-wrapper">
-						<view v-if="status === 'shipped'" class="red-sign"></view>
-					</view>
-					
+					<view :class="{ 'navigator-title': true, clicked: status === 'shipped' }">待收货</view>
+					<view class="litter-wrapper"><view v-if="status === 'shipped'" class="red-sign"></view></view>
 				</view>
 				<view class="header-wrapper" @click="changeOrderStatus('geted')">
-					<view :class="{'navigator-title':true,clicked:status === 'geted'}">已取票</view>
-					<view class="litter-wrapper">
-						<view v-if="status === 'geted'" class="red-sign"></view>
-					</view>
-					
+					<view :class="{ 'navigator-title': true, clicked: status === 'geted' }">已取票</view>
+					<view class="litter-wrapper"><view v-if="status === 'geted'" class="red-sign"></view></view>
 				</view>
 				<view class="header-wrapper" @click="changeOrderStatus('lock')">
-					<view :class="{'navigator-title':true,clicked:status === 'lock'}">待付款</view>
-					<view class="litter-wrapper">
-						<view v-if="status === 'lock'" class="red-sign"></view>
-					</view>
-					
+					<view :class="{ 'navigator-title': true, clicked: status === 'lock' }">待付款</view>
+					<view class="litter-wrapper"><view v-if="status === 'lock'" class="red-sign"></view></view>
 				</view>
 			</view>
-			<view v-if="noOrder" class="order-detail">
-				<common-order @isNull="getLen" :status="status"></common-order>
-			</view>
+			<view v-if="noOrder" class="order-detail"><common-order :orderData="orderData" @isNull="getLen" :status="status"></common-order></view>
 			<view v-else class="no-list">
 				<view class="other-container">
 					<image src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/temp/noorder.png" mode=""></image>
@@ -44,22 +29,24 @@
 				</view>
 			</view>
 		</view>
-		
 	</view>
 	<no-login v-else></no-login>
 </template>
 
 <script>
-import noLogin from '../login/noLogin.vue'
+import noLogin from '../login/noLogin.vue';
 import commonOrder from './commonOrderItem.vue';
 import backHeader from '../../../components/childheader.vue';
+import { orderList } from '../../../Api/myApi/orderList.js';
+import { formatDate } from '../../../common/formatDate.js';
 export default {
 	data() {
 		return {
 			// lock 待付款；payed 待取票；shipped 待收货；geted 已取票
-			status: "payed",
+			status: 'payed',
 			loginStatus: true,
-			noOrder: true
+			noOrder: true,
+			orderData: [] // 订单列表
 		};
 	},
 	components: {
@@ -69,27 +56,332 @@ export default {
 	},
 	methods: {
 		// 改变导航栏
-		changeOrderStatus(status){
+		changeOrderStatus(status) {
 			this.status = status;
 			this.noOrder = true;
-			console.log(1111)
+
+			let stu = this.status;
+			// 获取订单列表，传给子组件
+			switch (stu) {
+				// 待取票
+				case 'payed':
+					orderList({
+						status: stu
+					}).then(res => {
+						console.log(res, stu);
+						// this.orderData = res[1].data.data;
+						this.orderData = [
+							{
+								id: 4,
+								concert_id: 44,
+								concert_time_id: 92,
+								concert_ticket_id: 58,
+								price: 1000000,
+								num: 0,
+								discount: 8,
+								money: 700000,
+								status: 'payed',
+								out_trade_no: '121323123123',
+								type: 'wechat',
+								created_at: 1591329678,
+								resale_num: 0,
+								expire_in: 200,
+								concert: {
+									id: 44,
+									name: '吴亦凡演唱会',
+									city_name: '北京',
+									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
+									venue_id: 3
+								},
+								concert_time: {
+									id: 92,
+									start_at: 1591361760
+								},
+								concert_ticket: {
+									id: 92,
+									resale_price: 4546,
+									resale_price_lower: 46,
+									resale_price_upper: 45046
+								},
+								venue: {
+									name: '北京场馆',
+									addr: '北京石景山'
+								}
+							}
+						];
+						this.getLen();
+						this.orderData.forEach(item => {
+							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+						});
+						this.$emit('isNull', this.orderData);
+					});
+					break;
+				// 待付款
+				case 'lock':
+					orderList({
+						status: stu
+					}).then(res => {
+						console.log(res, stu);
+						// this.orderData = res[1].data.data;
+						this.orderData = [
+							{
+								id: 5,
+								concert_id: 44,
+								concert_time_id: 92,
+								concert_ticket_id: 58,
+								price: 1000000,
+								num: 0,
+								discount: 8,
+								money: 700000,
+								status: 'payed',
+								out_trade_no: '121323123123',
+								type: 'wechat',
+								created_at: 1591329678,
+								resale_num: 0,
+								expire_in: 200,
+								concert: {
+									id: 44,
+									name: '吴亦凡演唱会',
+									city_name: '北京',
+									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
+									venue_id: 3
+								},
+								concert_time: {
+									id: 92,
+									start_at: 1591361760
+								},
+								concert_ticket: {
+									id: 92,
+									resale_price: 4546,
+									resale_price_lower: 46,
+									resale_price_upper: 45046
+								},
+								venue: {
+									name: '北京场馆',
+									addr: '北京石景山'
+								}
+							}
+						];
+						this.getLen();
+						this.orderData.forEach(item => {
+							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+						});
+						this.$emit('isNull', this.orderData);
+					});
+					break;
+				// 已取票
+				case 'geted':
+					orderList({
+						status: stu
+					}).then(res => {
+						console.log(res, stu);
+						this.orderData = res[1].data.data;
+						this.getLen();
+						this.orderData.forEach(item => {
+							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+						});
+						this.$emit('isNull', this.orderData);
+					});
+					break;
+				// 待收货
+				case 'shipped':
+					orderList({
+						status: stu
+					}).then(res => {
+						console.log(res, stu);
+						// this.orderData = res[1].data.data;
+						this.orderData = [
+							{
+								id: 1,
+								concert_id: 44,
+								concert_time_id: 92,
+								concert_ticket_id: 58,
+								price: 1000000,
+								num: 0,
+								discount: 8,
+								money: 700000,
+								status: 'payed',
+								out_trade_no: '121323123123',
+								type: 'wechat',
+								created_at: 1591329678,
+								resale_num: 0,
+								expire_in: 200,
+								concert: {
+									id: 44,
+									name: '吴亦凡演唱会',
+									city_name: '北京',
+									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
+									venue_id: 3
+								},
+								concert_time: {
+									id: 92,
+									start_at: 1591361760
+								},
+								concert_ticket: {
+									id: 92,
+									resale_price: 4546,
+									resale_price_lower: 46,
+									resale_price_upper: 45046
+								},
+								venue: {
+									name: '北京场馆',
+									addr: '北京石景山'
+								}
+							},
+							{
+								id: 2,
+								concert_id: 44,
+								concert_time_id: 92,
+								concert_ticket_id: 58,
+								price: 1000000,
+								num: 0,
+								discount: 8,
+								money: 700000,
+								status: 'payed',
+								out_trade_no: '121323123123',
+								type: 'wechat',
+								created_at: 1591329678,
+								resale_num: 0,
+								expire_in: 200,
+								concert: {
+									id: 44,
+									name: '吴亦凡演唱会',
+									city_name: '北京',
+									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
+									venue_id: 3
+								},
+								concert_time: {
+									id: 92,
+									start_at: 1591361760
+								},
+								concert_ticket: {
+									id: 92,
+									resale_price: 4546,
+									resale_price_lower: 46,
+									resale_price_upper: 45046
+								},
+								venue: {
+									name: '北京场馆',
+									addr: '北京石景山'
+								}
+							},
+							{
+								id: 3,
+								concert_id: 44,
+								concert_time_id: 92,
+								concert_ticket_id: 58,
+								price: 1000000,
+								num: 0,
+								discount: 8,
+								money: 700000,
+								status: 'payed',
+								out_trade_no: '121323123123',
+								type: 'wechat',
+								created_at: 1591329678,
+								resale_num: 0,
+								expire_in: 200,
+								concert: {
+									id: 44,
+									name: '吴亦凡演唱会',
+									city_name: '北京',
+									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
+									venue_id: 3
+								},
+								concert_time: {
+									id: 92,
+									start_at: 1591361760
+								},
+								concert_ticket: {
+									id: 92,
+									resale_price: 4546,
+									resale_price_lower: 46,
+									resale_price_upper: 45046
+								},
+								venue: {
+									name: '北京场馆',
+									addr: '北京石景山'
+								}
+							}
+						];
+						this.getLen();
+						this.orderData.forEach(item => {
+							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+						});
+						this.$emit('isNull', this.orderData);
+					});
+					break;
+			}
 		},
 		// 获取子组件中订单的长度
-		getLen(e){
-			if(!!e&&e.length>0){
-				console.log(1)
+		getLen(e) {
+			if (this.orderData.length > 0) {
+				console.log(1);
 				this.noOrder = true;
-			}else{
-				console.log(2)
+			} else {
+				console.log(2);
 				this.noOrder = false;
 			}
-			console.log("我是子组件传过来的值",e);
+			console.log('我是子组件传过来的值', e);
 		}
 	},
 	onLoad() {
-		if(uni.getStorageSync("loginStatus")){
+		if (uni.getStorageSync('loginStatus')) {
 			this.loginStatus = true;
-		}else{
+			
+			// 页面初始化时，请求一次待取票接口，获取数据
+			orderList({
+				status: "payed"
+			}).then(res => {
+				console.log(res);
+				// this.orderData = res[1].data.data;
+				this.orderData = [
+					{
+						id: 4,
+						concert_id: 44,
+						concert_time_id: 92,
+						concert_ticket_id: 58,
+						price: 1000000,
+						num: 0,
+						discount: 8,
+						money: 700000,
+						status: 'payed',
+						out_trade_no: '121323123123',
+						type: 'wechat',
+						created_at: 1591329678,
+						resale_num: 0,
+						expire_in: 200,
+						concert: {
+							id: 44,
+							name: '吴亦凡演唱会',
+							city_name: '北京',
+							poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
+							venue_id: 3
+						},
+						concert_time: {
+							id: 92,
+							start_at: 1591361760
+						},
+						concert_ticket: {
+							id: 92,
+							resale_price: 4546,
+							resale_price_lower: 46,
+							resale_price_upper: 45046
+						},
+						venue: {
+							name: '北京场馆',
+							addr: '北京石景山'
+						}
+					}
+				];
+				this.getLen();
+				this.orderData.forEach(item => {
+					item.concert_time.start_at = formatDate(item.concert_time.start_at);
+				});
+				this.$emit('isNull', this.orderData);
+			});
+			
+			
+		} else {
 			this.loginStatus = false;
 		}
 	}
@@ -97,39 +389,39 @@ export default {
 </script>
 
 <style lang="less" scoped>
-page{
+page {
 	height: 100%;
-	.my-order{
+	.my-order {
 		height: 100%;
-		background: #F6F6F6;
+		background: #f6f6f6;
 		position: relative;
-		.my-order-main{
+		.my-order-main {
 			padding-top: 140upx;
 			height: 100%;
 			box-sizing: border-box;
-			.order-navigator{
+			.order-navigator {
 				display: flex;
 				padding: 25upx 40upx 0 40upx;
 				background: #fff;
 				justify-content: space-between;
 				color: #666666;
 				font-size: 28upx;
-				.header-wrapper{
-					.litter-wrapper{
+				.header-wrapper {
+					.litter-wrapper {
 						display: flex;
 						justify-content: center;
 					}
-					.navigator-title{
+					.navigator-title {
 						position: relative;
 						z-index: 999;
 					}
-					.clicked{
+					.clicked {
 						font-weight: 600;
 						color: #222;
 					}
-					.red-sign{
-						background: #FF4657;
-						
+					.red-sign {
+						background: #ff4657;
+
 						width: 59upx;
 						height: 6upx;
 						margin-top: 10upx;
@@ -161,7 +453,6 @@ page{
 				}
 			}
 		}
-		
 	}
 }
 </style>

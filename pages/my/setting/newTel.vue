@@ -19,7 +19,15 @@
 			<view class="verification-code">
 				<view class="left-wrapper">
 					<view class="code-left">验证码</view>
-					<input :focus="telFlag" v-model="code" class="code-input" type="number" placeholder="请输入验证码" placeholder-style="color:#B1B1B1;font-size:28upx" maxlength="4" />
+					<input
+						:focus="telFlag"
+						v-model="code"
+						class="code-input"
+						type="number"
+						placeholder="请输入验证码"
+						placeholder-style="color:#B1B1B1;font-size:28upx"
+						maxlength="4"
+					/>
 				</view>
 
 				<view v-if="getCodeFlag" class="code-right" @click="getCode">获取验证码</view>
@@ -27,16 +35,20 @@
 			</view>
 			<button :class="{ 'next-step': true, redBgc: totalFlag }" @click="finish">完成</button>
 		</view>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
 <script>
+import md5 from '../../../tool/md5.js';
 import backHeader from '../../../components/childheader.vue';
 import { defaultTelCode } from '../../../Api/myApi/defaultTelCode.js';
 import { updateUserInfo } from '../../../Api/myApi/updateUserInfo.js';
 export default {
 	data() {
 		return {
+			errMsg: '',
+			showOrNot: false,
 			tel: '',
 			code: '',
 			telFlag: false,
@@ -76,41 +88,78 @@ export default {
 		backHeader
 	},
 	methods: {
+		random8Str() {
+			let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789';
+			let len = chars.length;
+			let randomStr = '';
+			for (var i = 0; i < 8; i++) {
+				let r = chars[Math.floor(Math.random() * len)];
+				randomStr += r;
+			}
+			return randomStr;
+		},
+		formatDate() {
+			let dd = new Date();
+			let y = dd.getFullYear();
+			let m = (dd.getMonth() + 1).toString().padStart(2, '0');
+			let d = dd
+				.getDate()
+				.toString()
+				.padStart(2, '0');
+			let h = dd
+				.getHours()
+				.toString()
+				.padStart(2, '0');
+			let min = dd
+				.getMinutes()
+				.toString()
+				.padStart(2, '0');
+			let s = dd
+				.getSeconds()
+				.toString()
+				.padStart(2, '0');
+			return y + m + d + h + min + s;
+		},
 		getCode() {
 			if (this.tel.length < 11) {
 				this.vFlag = true;
 				return;
 			}
+			let str = this.random8Str();
+			let dt = this.formatDate();
+			let sign = `${this.tel}bi354bo${dt}${str}`;
 			defaultTelCode({
 				is_check: 0,
 				tel: this.tel,
-				old_code: this.oldCode
+				old_code: this.oldCode,
+				nonce_str: str,
+				datetime: dt,
+				sign: md5(sign)
 			}).then(res => {
-				console.log("newTel",res)
-				if(res[1].data.err_msg === "电话号码格式不正确"){
+				console.log('newTel', res);
+				if (res[1].data.err_msg === '电话号码格式不正确！') {
 					uni.showToast({
-						title:"请输入有效的手机号！",
-						icon:"none"
-					})
-					return
-				}else if(res[1].data.err_msg === "验证码错误"){
+						title: '请输入有效的手机号！',
+						icon: 'none'
+					});
+					return;
+				} else if (res[1].data.err_msg === '验证码错误！') {
 					uni.showToast({
-						title:"验证码错误，请重新输入",
-						icon:"none"
-					})
-					uni.navigateBack()
+						title: '验证码错误，请重新输入',
+						icon: 'none'
+					});
+					uni.navigateBack();
 				}
-				if (res[1].data.err_msg === "短信发送成功！") {
+				if (res[1].data.err_msg === '短信发送成功！') {
 					this.getCodeFlag = false;
 					this.leftTime = 60;
 					uni.showToast({
-						title:"短信发送成功"
-					})
+						title: '短信发送成功'
+					});
 					this.timeId = setInterval(() => {
 						this.leftTime--;
 					}, 1000);
 				}
-				console.log(res);
 			});
 		},
 
@@ -118,12 +167,23 @@ export default {
 			if (this.telFlag && this.codeFlag) {
 				updateUserInfo({
 					tel: this.tel,
-					code: this.code
+					code: this.code,
+					old_code: this.oldCode
 				}).then(res => {
-					console.log(res);
-					uni.navigateTo({
-						url: '/pages/my/setting/setting'
-					});
+					console.log('更新信息', res);
+					if (res[1].data.err_msg === '手机号码绑定成功！') {
+						uni.showToast({
+							title: '手机号码绑定成功！',
+							icon: 'none',
+							duration: 1500
+						});
+						uni.navigateTo({
+							url: '/pages/my/setting/setting'
+						});
+					} else {
+						this.errMsg = res[1].data.err_msg;
+						this.showOrNot = true;
+					}
 				});
 			} else if (this.tel.length < 11) {
 				this.vFlag = true;
@@ -206,7 +266,7 @@ page {
 				border-radius: 10upx;
 			}
 			.redBgc {
-				background: #ff4670;
+				background: #ff4657;
 			}
 		}
 	}

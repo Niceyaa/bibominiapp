@@ -7,19 +7,23 @@
 		<view class="save-wrapper">
 			<view @click="saveName" class="save-btn">保存</view>
 		</view>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
 <script>
+	import errModal from '../../../components/errModal.vue'
 	import backHeader from '../../../components/childheader.vue'
 	import { updateUserInfo } from '../../../Api/myApi/updateUserInfo.js';
 	export default {
 		data() {
 			return {
-				nickName: '张三'
+				nickName: '张三',
+				errMsg: "",
+				showOrNot: false
 			};
 		},
-		components:{backHeader},
+		components:{backHeader,errModal},
 		methods: {
 			back() {
 				var pages = getCurrentPages();
@@ -37,8 +41,8 @@
 					nickname: this.nickName
 				}).then(res => {
 					// 昵称更新成功
-					if (res[1].data.err_code === 0) {
-						console.log(res[1].data.data.nickname)
+					if (res[1].data.err_msg === "用户信息更新成功！") {
+						console.log("设置昵称",res)
 						uni.setStorageSync("nickName", res[1].data.data.nickname);
 						uni.showToast({
 							title: '昵称更新成功'
@@ -46,6 +50,9 @@
 						uni.switchTab({
 							url: '/pages/my/newMy'
 						});
+					}else{
+						this.errMsg = res[1].data.err_msg;
+						this.showOrNot = true;
 					}
 				});
 			},

@@ -61,7 +61,6 @@
 </template>
 
 <script>
-	import { Base64 } from '../../common/Base64.js'
 	import myMenu from '../../components/myMenu';
 	import { loginApi } from '../../Api/userApi';
 	import { authTel } from '../../Api/myApi/authTel';
@@ -139,7 +138,6 @@
 			};
 		},
 		onShow() {
-			console.log("base64",Base64.encode("http://tmp/wxf63dc6a8c922901d.o6zAJs1jnM4KglVUXOSU8iMxlWHg.8h7QG1BsWxva4648e179602e93c32182529cb6f096fd.jpg"))
 			this.loginStatus = uni.getStorageSync('loginStatus') ? true : false;
 
 			this.userInfo.img = 'https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/newMy/headimg.png';

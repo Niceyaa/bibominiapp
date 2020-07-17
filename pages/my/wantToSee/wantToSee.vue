@@ -134,14 +134,16 @@ export default {
 						align-items: flex-end;
 						margin-top: 40upx;
 						.price{
+							
 							font-size: 24upx;
 							text{
 								font-weight: bold;
 								font-size: 36upx;
+								color: #ff4657;
 							}
 						}
 						.get-btn{
-							background: #212121;
+							background: #ff4657;
 							text-align: center;
 							width: 120upx;
 							height: 60upx;

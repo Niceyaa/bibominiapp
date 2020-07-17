@@ -9,10 +9,6 @@
 					<view class="code-left">验证码</view>
 					<input maxlength="4" v-model="code" class="code-input" type="number" placeholder="请输入验证码" placeholder-style="color:#B1B1B1;font-size:28upx">
 				</view>
-				
-				
-				
-				
 				<view v-if="getCodeFlag" class="code-right" @click="getCode">获取验证码</view>
 				<view v-else style="color: #B1B1B1;font-weight: normal;">{{leftTime}}S后重发</view>
 			</view>
@@ -58,9 +54,20 @@
 			this.tel = uni.getStorageSync("defaultTel"); 
 		},
 		methods:{
+			random8Str(){
+				let chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789";
+				let len = chars.length;
+				let randomStr = "";
+				for (var i = 0; i < 8; i++) {
+					let r = chars[Math.floor(Math.random()*len)];
+					randomStr += r;
+				}
+				return randomStr;
+			},
 			getCode(){
 				defaultTelCode({
-					is_check:1
+					is_check:1,
+					nonce_str:this.random8Str()
 				}).then(res=>{
 					console.log("发送验证码",res)
 					if(res[1].data.err_code === 0){
