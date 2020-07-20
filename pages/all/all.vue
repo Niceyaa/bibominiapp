@@ -59,7 +59,7 @@
                 <swiper id="swiper" class="swiper-box" :current="tabCurrentIndex" @change="changeTab(index,$event)">
                     <swiper-item v-for="(tabItem,indexss) in tabBars" :key="tabItem.id">
                         <scroll-view class="panel-scroll-box" :scroll-y="enableScroll" @scrolltolower="loadMore">
-                            <tt :child="child" :allList="allList" :activeIndex="activeIndex" @changeData="changeData"
+                            <tt @sendOnOff="getOnOff" :child="child" :allList="allList" :activeIndex="activeIndex" @changeData="changeData"
                                 v-if="child!=null && allList!=[]" :current="indexss"></tt>
 
 
@@ -127,7 +127,8 @@
                 </view>
             </view>
         </view>
-    </view>
+		<appAlert @changeAppAlertOnoff="changeOnOff" :appAlertOnoff="onoff"></appAlert>
+	</view>
 
 </template>
 
@@ -161,6 +162,7 @@
         },
         data() {
             return {
+				onoff: false,
                 nowTime: '全部时间', //当前时间
                 duan: '',
                 addWeek: 0,
@@ -285,9 +287,10 @@
                 uni.showLoading({
                     title: '加载中'
                 });
+				console.log("出发了额")
                 this.allList = [];
                 this.loadNewsList('refresh');
-                console.log("出发了额")
+                // console.log("出发了额")
             },
             "$store.state.type": function (newValue, older) {
                 let that = this;
@@ -344,6 +347,12 @@
             }
         },
         methods: {
+			getOnOff(i){
+				this.onoff = i;
+			},
+			changeOnOff(i) {
+				this.onoff = i;
+			},
             // 改变时间
             chageTime(newValue) {
                 this.duan = newValue;
@@ -525,7 +534,7 @@
                     }).then(function (data) {
                         that.$set(that.allList, that.currentChild, data[1].data.data)
                         uni.hideLoading()
-                        console.log(that.allList)
+                        console.log("更改之后",that.allList)
                     })
                 }
                 let tabItem = this.tabBars[this.tabCurrentIndex];

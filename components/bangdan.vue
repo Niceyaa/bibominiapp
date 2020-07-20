@@ -177,6 +177,10 @@
                     color: rgba(102, 102, 102, 0.66);
                     line-height: 36rpx;
                     padding-top: 5rpx;
+					height: 36upx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
                 }
             }
         }

@@ -214,6 +214,9 @@
 										uni.setStorageSync('nickName', data[1].data.data.nickname);
 										uni.setStorageSync('loginStatus', true);
 										uni.setStorageSync('defaultTel', data[1].data.data.tel);
+										uni.showToast({
+											title: '登录成功'
+										});
 									}
 								})
 							}

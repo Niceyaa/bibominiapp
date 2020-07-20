@@ -193,6 +193,11 @@
                 }
 
                 .hot-address-container {
+					height: 36upx;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+					padding-right: 45upx;
                     .hot-address {
                         font-size: 24rpx;
                         font-family: Microsoft YaHei;

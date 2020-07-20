@@ -198,6 +198,7 @@
 					that.menuList = data[1].data.data
 				})
 				//演唱会
+				console.log("我是options",options)
 				allpage({
 					city_code: options.city_code,
 					type_id: 1
@@ -292,6 +293,7 @@
 				indexlist({
 					city_code: this.$store.state.cityCode,
 				}).then(function (data) {
+					console.log("首页数据",data)
 					that.chosen = data[1].data.data.chosen
 					console.log(that.chosen)
 					that.newList = data[1].data.data.new

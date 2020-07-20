@@ -69,46 +69,8 @@ export default {
 						status: stu
 					}).then(res => {
 						console.log(res, stu);
-						// this.orderData = res[1].data.data;
-						this.orderData = [
-							{
-								id: 4,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								price: 1000000,
-								num: 0,
-								discount: 8,
-								money: 700000,
-								status: 'payed',
-								out_trade_no: '121323123123',
-								type: 'wechat',
-								created_at: 1591329678,
-								resale_num: 0,
-								expire_in: 200,
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								concert_ticket: {
-									id: 92,
-									resale_price: 4546,
-									resale_price_lower: 46,
-									resale_price_upper: 45046
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							}
-						];
+						this.orderData = res[1].data.data;
+
 						this.getLen();
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
@@ -122,46 +84,8 @@ export default {
 						status: stu
 					}).then(res => {
 						console.log(res, stu);
-						// this.orderData = res[1].data.data;
-						this.orderData = [
-							{
-								id: 5,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								price: 1000000,
-								num: 0,
-								discount: 8,
-								money: 700000,
-								status: 'payed',
-								out_trade_no: '121323123123',
-								type: 'wechat',
-								created_at: 1591329678,
-								resale_num: 0,
-								expire_in: 200,
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								concert_ticket: {
-									id: 92,
-									resale_price: 4546,
-									resale_price_lower: 46,
-									resale_price_upper: 45046
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							}
-						];
+						this.orderData = res[1].data.data;
+
 						this.getLen();
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
@@ -189,120 +113,8 @@ export default {
 						status: stu
 					}).then(res => {
 						console.log(res, stu);
-						// this.orderData = res[1].data.data;
-						this.orderData = [
-							{
-								id: 1,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								price: 1000000,
-								num: 0,
-								discount: 8,
-								money: 700000,
-								status: 'payed',
-								out_trade_no: '121323123123',
-								type: 'wechat',
-								created_at: 1591329678,
-								resale_num: 0,
-								expire_in: 200,
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								concert_ticket: {
-									id: 92,
-									resale_price: 4546,
-									resale_price_lower: 46,
-									resale_price_upper: 45046
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							},
-							{
-								id: 2,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								price: 1000000,
-								num: 0,
-								discount: 8,
-								money: 700000,
-								status: 'payed',
-								out_trade_no: '121323123123',
-								type: 'wechat',
-								created_at: 1591329678,
-								resale_num: 0,
-								expire_in: 200,
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								concert_ticket: {
-									id: 92,
-									resale_price: 4546,
-									resale_price_lower: 46,
-									resale_price_upper: 45046
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							},
-							{
-								id: 3,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								price: 1000000,
-								num: 0,
-								discount: 8,
-								money: 700000,
-								status: 'payed',
-								out_trade_no: '121323123123',
-								type: 'wechat',
-								created_at: 1591329678,
-								resale_num: 0,
-								expire_in: 200,
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								concert_ticket: {
-									id: 92,
-									resale_price: 4546,
-									resale_price_lower: 46,
-									resale_price_upper: 45046
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							}
-						];
+						this.orderData = res[1].data.data;
+
 						this.getLen();
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
@@ -327,60 +139,20 @@ export default {
 	onLoad() {
 		if (uni.getStorageSync('loginStatus')) {
 			this.loginStatus = true;
-			
+
 			// 页面初始化时，请求一次待取票接口，获取数据
 			orderList({
-				status: "payed"
+				status: 'payed'
 			}).then(res => {
 				console.log(res);
-				// this.orderData = res[1].data.data;
-				this.orderData = [
-					{
-						id: 4,
-						concert_id: 44,
-						concert_time_id: 92,
-						concert_ticket_id: 58,
-						price: 1000000,
-						num: 0,
-						discount: 8,
-						money: 700000,
-						status: 'payed',
-						out_trade_no: '121323123123',
-						type: 'wechat',
-						created_at: 1591329678,
-						resale_num: 0,
-						expire_in: 200,
-						concert: {
-							id: 44,
-							name: '吴亦凡演唱会',
-							city_name: '北京',
-							poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-							venue_id: 3
-						},
-						concert_time: {
-							id: 92,
-							start_at: 1591361760
-						},
-						concert_ticket: {
-							id: 92,
-							resale_price: 4546,
-							resale_price_lower: 46,
-							resale_price_upper: 45046
-						},
-						venue: {
-							name: '北京场馆',
-							addr: '北京石景山'
-						}
-					}
-				];
+				this.orderData = res[1].data.data;
+
 				this.getLen();
 				this.orderData.forEach(item => {
 					item.concert_time.start_at = formatDate(item.concert_time.start_at);
 				});
 				this.$emit('isNull', this.orderData);
 			});
-			
-			
 		} else {
 			this.loginStatus = false;
 		}

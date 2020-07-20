@@ -14,11 +14,11 @@
                     </text>
                     <view class="jindutiao">
                         <view class="jindutiao-wancheng" :style="'width:'+(width/10000)*item.hot_num+'px'">
-                            <text class="jindutiao-text">
+                            <!-- <text class="jindutiao-text">
                                 ￥1
-                            </text>
+                            </text> -->
                             <text class="jindutiao-text-max">
-                                ￥{{item.price/100}}
+                                {{item.price/100}}
                             </text>
                         </view>
 
@@ -124,6 +124,10 @@
                 line-height: 114upx;
                 float: left;
                 width: 125rpx;
+				height: 114upx;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
             }
 
             .jindutiao {

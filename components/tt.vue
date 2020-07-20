@@ -109,7 +109,8 @@
         methods: {
             // 购票
             gouPiao() {
-                uni.showModal({
+				this.$emit("sendOnOff",true);
+               /* uni.showModal({
                     title: '请下载购票app',
                     content: '小程序待开放',
                     success: function (res) {
@@ -119,7 +120,7 @@
                             console.log('用户点击取消');
                         }
                     }
-                });
+                }); */
             },
             changeData(name, index, indexs) {
                 this.$emit('changeData', name, index, indexs)
@@ -218,7 +219,7 @@
             .goupiao {
                 width: 120rpx;
                 height: 60rpx;
-                background: rgba(34, 34, 34, 1);
+                background: #ff4657;
                 border-radius: 10rpx;
                 font-size: 24rpx;
                 font-family: Microsoft YaHei;

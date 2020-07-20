@@ -841,7 +841,7 @@
                 }
 
                 text {
-                    margin-left: 20rpx;
+                    margin-left: 10rpx;
                     font-size: 24rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
@@ -856,7 +856,7 @@
                 image {
                     width: 20rpx;
                     height: 25rpx;
-                    vertical-align: middle;
+                    -vertical-align: middle;
 
                 }
 
@@ -867,7 +867,10 @@
                     font-family: PingFang SC;
                     font-weight: 400;
                     color: rgba(255, 255, 255, 1);
-                    margin-left: 20rpx;
+                    margin-left: 10rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
                 }
 
                 .xian {
@@ -884,11 +887,12 @@
 
                     text {
                         width: auto;
+						overflow: hidden;
                     }
 
                     image {
                         position: absolute;
-                        left: 40rpx;
+                        left: 20rpx;
                         top: -25rpx;
                         width: 30rpx;
                         height: 30rpx;

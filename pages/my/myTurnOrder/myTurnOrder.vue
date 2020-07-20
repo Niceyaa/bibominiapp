@@ -71,50 +71,9 @@ export default {
 						status: stu
 					}).then(res => {
 						console.log(res);
-						let tt = [
-							{
-								id: 1,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								price: 1000000,
-								num: 0,
-								discount: 8,
-								money: 700000,
-								coupon_money: 100000,
-								balance_pay: 600000,
-								status: 'payed',
-								out_trade_no: '121323123123',
-								type: 'wechat',
-								created_at: 1591329678,
-								resale_status: 'none',
-								resale_num: 0,
-								expire_in: 200,
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								concert_ticket: {
-									id: 92,
-									resale_price: 4546,
-									resale_price_lower: 46,
-									resale_price_upper: 45046
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							}
-						];
-						// this.turnDetail = res[1].data.data;
-						that.turnDetail = tt;
+						
+						this.turnDetail = res[1].data.data;
+						// that.turnDetail = tt;
 						this.getLen();
 						// that.$set(that.turnDetail, tt);
 						that.turnDetail.forEach(item => {
@@ -130,55 +89,7 @@ export default {
 					}).then(res => {
 						console.log(res);
 						that.turnDetail = res[1].data.data;
-						let tt = [
-							{
-								id: 1,
-								resale_apply_id: 1,
-								concert_id: 44,
-								concert_time_id: 92,
-								concert_ticket_id: 58,
-								order_id: 1,
-								start_at: 1590826210,
-								name: '周杰伦演唱会',
-								price: 1000000,
-								total: 2,
-								bought_num: 10,
-								remain_num: 5,
-								user_id: 100004,
-								status: 'apply',
-								order: {
-									id: 1,
-									out_trade_no: '121323123123',
-									num: 0
-								},
-								resale_apply: {
-									id: 1,
-									concert_name: '演出名称',
-									concert_time: '演出时间',
-									ticket_info: '票信息',
-									concert_addr: '演出地址',
-									desc: '转票详情1111',
-									waybill_num: 'bc12312312312313'
-								},
-								concert: {
-									id: 44,
-									name: '吴亦凡演唱会',
-									city_name: '北京',
-									poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-									venue_id: 3
-								},
-								concert_time: {
-									id: 92,
-									start_at: 1591361760
-								},
-								venue: {
-									name: '北京场馆',
-									addr: '北京石景山'
-								}
-							}
-						];
-						// that.$set(that.turnDetail,tt);
-						that.turnDetail = tt;
+						// that.turnDetail = tt;
 						this.getLen();
 						that.turnDetail.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
@@ -234,50 +145,9 @@ export default {
 				status: "2resale"
 			}).then(res => {
 				console.log(res);
-				let tt = [
-					{
-						id: 1,
-						concert_id: 44,
-						concert_time_id: 92,
-						concert_ticket_id: 58,
-						price: 1000000,
-						num: 0,
-						discount: 8,
-						money: 700000,
-						coupon_money: 100000,
-						balance_pay: 600000,
-						status: 'payed',
-						out_trade_no: '121323123123',
-						type: 'wechat',
-						created_at: 1591329678,
-						resale_status: 'none',
-						resale_num: 0,
-						expire_in: 200,
-						concert: {
-							id: 44,
-							name: '吴亦凡演唱会',
-							city_name: '北京',
-							poster: 'https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg',
-							venue_id: 3
-						},
-						concert_time: {
-							id: 92,
-							start_at: 1591361760
-						},
-						concert_ticket: {
-							id: 92,
-							resale_price: 4546,
-							resale_price_lower: 46,
-							resale_price_upper: 45046
-						},
-						venue: {
-							name: '北京场馆',
-							addr: '北京石景山'
-						}
-					}
-				];
-				// this.turnDetail = res[1].data.data;
-				this.turnDetail = tt;
+				
+				this.turnDetail = res[1].data.data;
+				// this.turnDetail = tt;
 				this.getLen();
 				this.turnDetail.forEach(item => {
 					item.concert_time.start_at = formatDate(item.concert_time.start_at);
