@@ -102,82 +102,7 @@ export default {
 			cancelModalFlag: false,
 			order_id: '',
 			status: '',
-			orderData: {
-        "id":95,
-        "concert_id":78,
-        "concert_time_id":109,
-        "concert_ticket_id":97,
-        "user_id":100017,
-        "user_money_log_id":49,
-        "user_coupon_id":0,
-        "coupon_money":0,
-        "price":100,
-        "num":5,
-        "discount":100,
-        "balance_pay":500,
-        "money":500,
-        "status":"payed",
-        "updated_at":1592967114,
-        "created_at":1592966274,
-        "out_trade_no":"",
-        "payment_no":null,
-        "payment_time":null,
-        "type":"balance",
-        "resale_status":"over",
-        "resale_num":2,
-        "concert":{
-            "id":78,
-            "name":"法语音乐剧《摇滚红与黑》现场演出成 都站首秀舞台演出",
-            "city_name":"重庆",
-            "poster":"https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/ppGsjRte7B4NasWd9SjJ9jALzg5oVI2IOBC3CWnJ.png",
-            "venue_id":1
-        },
-        "concert_time":{
-            "id":109,
-            "start_at":1593446400
-        },
-        "concert_ticket":{
-            "id":97,
-            "name":"票面名称",
-            "resale_price_lower":0,
-            "resale_price_upper":0,
-            "resale_price":1200
-        },
-        "order_addr": {
-            "id": 1,
-            "order_id": 1,
-            "name": "1000000",
-            "tel": "8",
-            "addr": "700000",
-            "status": 0
-        },
-        "venue":{
-            "id":1,
-            "name":"重庆大剧院",
-            "addr":"重庆市江北区重庆大剧院"
-        },
-        "resale_ticket":[
-            {
-                "id":36,
-                "price":1200,
-                "total":2,
-                "bought_num":2,
-                "remain_num":0,
-                "created_at":1592966306,
-                "status":"over"
-            },
-            {
-                "id":37,
-                "price":1200,
-                "total":1,
-                "bought_num":0,
-                "remain_num":1,
-                "created_at":1592969004,
-                "status":"apply"
-            }],
-        "discounted_money":500,
-        "expire_in":0
-    }
+			orderData: {},
 		}
 	},
 	components: { myModal },
@@ -189,7 +114,7 @@ export default {
 	mounted() {
 		if (this.order_id) {
 			orderDesc({
-				order_id: this.order_id
+				prm: this.order_id
 			}).then(res => {
 				console.log(res);
 				// this.orderData = res[1].data.data;

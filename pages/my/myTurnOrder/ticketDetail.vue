@@ -105,49 +105,7 @@
 		data() {
 			return {
 				onoff:false,
-				orderDetail: {
-        "id": 1,
-        "resale_apply_id": 1,
-        "concert_id": 44,
-        "concert_time_id": 92,
-        "concert_ticket_id": 58,
-        "start_at": 1590826210,
-        "order_id": 0,
-        "name": "周杰伦演唱会",
-        "price": 1000000,
-        "total": 2,
-        "bought_num": 10,
-        "remain_num": 5,
-        "user_id": 100004,
-        "status": "apply",
-        "updated_at": 1590653171,
-        "created_at": 1588931667,
-        "resale_apply": {
-            "id": 1,
-            "concert_name": "演出名称",
-            "concert_time": "演出时间",
-            "ticket_info": "票信息",
-            "concert_addr": "演出地址",
-            "desc": "转票详情1111",
-            "waybill_num": "bc12312312312313"
-        },
-        "concert": {
-            "id": 44,
-            "name": "吴亦凡演唱会",
-            "city_name": "北京",
-            "poster": "https:\/\/ticket-app.oss-cn-shenzhen.aliyuncs.com\/TICKET\/concerts\/admin\/imgs\/izT2rcDcpyqpRw8msCpEzSQRi7VxJYJPCSJ7lX0n.jpeg",
-            "venue_id": 3
-        },
-        "concert_time": {
-            "id": 92,
-            "start_at": 1591361760
-        },
-        "venue": {
-            "id": 3,
-            "name": "北京场馆",
-            "addr": "北京石景山"
-        }
-    },
+				orderDetail: {},
 				status: "",
 				modalFlag: false,
 				cancelModalFlag: false,
@@ -203,7 +161,7 @@
 		},
 		onShow() {
 			turnOrderDesc({
-				resale_id:this.orderId
+				prm:this.orderId
 			}).then(res=>{
 				console.log("转票详情",res)
 				// this.orderDetail = res[1].data.data;

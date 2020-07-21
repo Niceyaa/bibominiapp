@@ -20,7 +20,7 @@
 					<view class="litter-wrapper"><view v-if="status === 'invalid'" class="red-sign"></view></view>
 				</view>
 			</view>
-			<view v-if="noOrder" class="order-detail"><common-order :turnDetail="turnDetail" @isNull="getLen" :status="status"></common-order></view>
+			<view v-if="noOrder" class="order-detail"><common-order :turnDetail="turnDetail" :status="status"></common-order></view>
 			<view class="no-list" v-else>
 				<view class="other-container">
 					<image src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/temp/noorder.png" mode=""></image>
@@ -68,39 +68,34 @@ export default {
 				// 待转票
 				case '2resale':
 					orderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res);
 						
 						this.turnDetail = res[1].data.data;
-						// that.turnDetail = tt;
 						this.getLen();
-						// that.$set(that.turnDetail, tt);
 						that.turnDetail.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
 					});
-					console.log(stu);
 					break;
 				// 转票中
 				case 'applying':
 					turnOrderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res);
 						that.turnDetail = res[1].data.data;
-						// that.turnDetail = tt;
 						this.getLen();
 						that.turnDetail.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
 					});
-					console.log(stu);
 					break;
 				// 已转出
 				case 'over':
 					turnOrderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res);
 						this.turnDetail = res[1].data.data;
@@ -109,12 +104,11 @@ export default {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
 					});
-					console.log(stu);
 					break;
 				// 已作废
 				case 'invalid':
 					turnOrderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res);
 						this.turnDetail = res[1].data.data;
@@ -123,7 +117,6 @@ export default {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
 					});
-					console.log(stu);
 					break;
 			}
 		},
@@ -142,12 +135,11 @@ export default {
 			this.loginStatus = true;
 			
 			orderList({
-				status: "2resale"
+				prm: "2resale"
 			}).then(res => {
 				console.log(res);
 				
 				this.turnDetail = res[1].data.data;
-				// this.turnDetail = tt;
 				this.getLen();
 				this.turnDetail.forEach(item => {
 					item.concert_time.start_at = formatDate(item.concert_time.start_at);

@@ -1,6 +1,6 @@
 <template>
 	<view class="my-order" v-if="loginStatus">
-		<back-header title="我的订单"></back-header>
+		<back-head title="我的订单"></back-head>
 		<view class="my-order-main">
 			<view class="order-navigator">
 				<view class="header-wrapper" @click="changeOrderStatus('payed')">
@@ -21,7 +21,9 @@
 					<view class="litter-wrapper"><view v-if="status === 'lock'" class="red-sign"></view></view>
 				</view>
 			</view>
-			<view v-if="noOrder" class="order-detail"><common-order :orderData="orderData" @isNull="getLen" :status="status"></common-order></view>
+			<view v-if="noOrder" class="order-detail">
+				<common-order :orderData="orderData" :status="status"></common-order>
+			</view>
 			<view v-else class="no-list">
 				<view class="other-container">
 					<image src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/temp/noorder.png" mode=""></image>
@@ -36,7 +38,7 @@
 <script>
 import noLogin from '../login/noLogin.vue';
 import commonOrder from './commonOrderItem.vue';
-import backHeader from '../../../components/childheader.vue';
+import backHead from '../../../components/childheader.vue';
 import { orderList } from '../../../Api/myApi/orderList.js';
 import { formatDate } from '../../../common/formatDate.js';
 export default {
@@ -50,7 +52,7 @@ export default {
 		};
 	},
 	components: {
-		backHeader,
+		backHead,
 		commonOrder,
 		noLogin
 	},
@@ -66,7 +68,7 @@ export default {
 				// 待取票
 				case 'payed':
 					orderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res, stu);
 						this.orderData = res[1].data.data;
@@ -75,13 +77,12 @@ export default {
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
-						this.$emit('isNull', this.orderData);
 					});
 					break;
 				// 待付款
 				case 'lock':
 					orderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res, stu);
 						this.orderData = res[1].data.data;
@@ -90,27 +91,26 @@ export default {
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
-						this.$emit('isNull', this.orderData);
 					});
 					break;
 				// 已取票
 				case 'geted':
 					orderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res, stu);
 						this.orderData = res[1].data.data;
+						
 						this.getLen();
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
-						this.$emit('isNull', this.orderData);
 					});
 					break;
 				// 待收货
 				case 'shipped':
 					orderList({
-						status: stu
+						prm: stu
 					}).then(res => {
 						console.log(res, stu);
 						this.orderData = res[1].data.data;
@@ -119,7 +119,6 @@ export default {
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
 						});
-						this.$emit('isNull', this.orderData);
 					});
 					break;
 			}
@@ -142,7 +141,7 @@ export default {
 
 			// 页面初始化时，请求一次待取票接口，获取数据
 			orderList({
-				status: 'payed'
+				prm: 'payed'
 			}).then(res => {
 				console.log(res);
 				this.orderData = res[1].data.data;

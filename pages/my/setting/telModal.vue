@@ -38,7 +38,7 @@ export default {
 				console.log('同意授权');
 				console.log('获取手机号', res.detail.iv);
 				console.log('获取手机号', res.detail.encryptedData);
-				let sign = uni.getStorageSync('sign');
+				var sign = uni.getStorageSync('sign');
 				console.log('sign', sign);
 				authTel({
 					appid: 'wxf63dc6a8c922901d',
@@ -56,7 +56,35 @@ export default {
 							url: '/pages/my/login/bindTel'
 						});
 						this.$emit('update:modalFlag', false);
-					} else {
+					}else if(authRes[1].data.err_code === 805){
+						uni.showToast({
+							title:authRes[1].data.err_msg,
+							success(e) {
+								if(e.confirm){
+									authTel({
+										appid: 'wxf63dc6a8c922901d',
+										sign: sign,
+										is_combine: 1
+									}).then(newRes=>{
+										this.$emit('setNickname', newRes[1].data.data.nickname);
+										this.$emit('setImg', newRes[1].data.data.img);
+										this.$emit('setStatus', true);
+										uni.setStorageSync('loginToken', newRes[1].data.data.token);
+										uni.setStorageSync('headImg', newRes[1].data.data.img);
+										uni.setStorageSync('nickName', newRes[1].data.data.nickname);
+										uni.setStorageSync('defaultTel', newRes[1].data.data.tel);
+										uni.setStorageSync('loginStatus', true);
+										uni.switchTab({
+											url: '/pages/my/newMy'
+										});
+										uni.showToast({
+											title: '恭喜您登录成功！'
+										});
+									})
+								}
+							}
+						})
+					}else {
 						this.$emit('setNickname', authRes[1].data.data.nickname);
 						this.$emit('setImg', authRes[1].data.data.img);
 						this.$emit('setStatus', true);

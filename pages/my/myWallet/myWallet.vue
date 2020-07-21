@@ -7,7 +7,7 @@
 			<text>我的余额</text>
 		</view>
 		<view class="balance-num">￥
-			<text>{{balanceNum}}</text>
+			<text>{{balance}}</text>
 		</view>
 		<view class="bill-wrapper">
 			<text @click="showMyBill" class="my-bill">我的账单</text>
@@ -29,8 +29,8 @@
 		data() {
 			return {
 				onoff: false,
-				balanceNum: "0.00",
-				loginStatus: true
+				loginStatus: true,
+				balance: ""
 			}
 		},
 		components:{noLogin,backHeader},
@@ -70,13 +70,14 @@
 		},
 		onShow() {
 			getUserInfoAtSet().then(res => {
+				console.log("登录信息",res)
 				this.bank_no = res[1].data.data.bank_info.no;
-				this.balance = res[1].data.data.balance;
+				if(!res[1].data.data.balance.toString().split(".")[1]){
+					this.balance  = res[1].data.data.balance.toString() + ".00";
+				}
 				uni.setStorageSync("bankNo", this.bank_no);
 				uni.setStorageSync("balance", this.balance);
-				console.log(res[1].data.data)
 			})
-			// this.balanceNum = "2999.00";
 		},
 		onLoad() {
 			if(uni.getStorageSync("loginStatus")){
