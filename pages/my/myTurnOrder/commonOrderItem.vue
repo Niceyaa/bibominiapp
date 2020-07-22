@@ -5,18 +5,45 @@
 				<view v-if="status === '2resale'" class="header-left">订单编号：{{ item.out_trade_no }}</view>
 				<view v-else class="header-left">订单编号：{{ item.order.out_trade_no }}</view>
 				<view v-if="status === '2resale'" class="header-right">待转票</view>
-				<view v-if="status === 'applying'" class="header-right">转票中</view>
+				<view v-if="status === 'applying'&&item.status !== 'apply'" class="header-right">转票中</view>
+				<view v-if="status === 'applying'&&item.status === 'apply'" class="header-right">审核中</view>
 				<view v-if="status === 'invalid'" class="header-right">已作废</view>
 				<view v-if="status === 'over'" class="header-right">已转出</view>
 			</view>
-			<view class="order-content" @click="goToTicketDetail(item.id)">
+			<view v-if="status === '2resale'" class="order-content" @click="goToTicketDetail(item.id)">
 				<image :src="item.concert.poster" mode=""></image>
 				<view class="content-right">
 					<view class="order-name">【{{ item.concert.city_name }}站】{{ item.concert.name }}</view>
 					<view class="order-desc">时间：{{ item.concert_time.start_at }}</view>
+					<view class="order-addr">地点：{{ item.venue.addr }}</view>
+					<view class="order-desc">数量：{{ item.num }}张</view>
+					
+				</view>
+			</view>
+			<!-- 转票中处于待审核状态 -->
+		<!-- 	<view v-else-if="status === 'applying'&&item.status === 'apply'" class="order-content" @click="goToTicketDetail(item.order_id)"> -->
+			<view v-else-if="status === 'applying'" class="order-content" @click="goToTicketDetail(item.order_id)">
+				<view class="content-right">
+					<view class="content-left">
+						<view class="has-border">个人转票</view>
+						<view class="content-title">碍事法师法师法师法</view>
+					</view>
+					<view class="turn-intro">
+						阿斯顿发沙发沙发沙发沙发发生发发发
+					</view>
+					<view class="order-desc">时间：{{ item.concert_time.start_at }}</view>
 					<view class="order-desc">地点：{{ item.venue.addr }}</view>
-					<view v-if="status === '2resale'" class="order-desc">数量：{{ item.num }}张</view>
-					<view v-else class="order-desc">数量：{{ item.order.num }}张</view>
+					<view class="order-desc">数量：{{ item.order.num }}张</view>
+				</view>
+			</view>
+			
+			<view v-else class="order-content" @click="goToTicketDetail(item.order_id)">
+				<image :src="item.concert.poster" mode=""></image>
+				<view class="content-right">
+					<view class="order-name">【{{ item.concert.city_name }}站】{{ item.concert.name }}</view>
+					<view class="order-desc">时间：{{ item.concert_time.start_at }}</view>
+					<view class="order-addr">地点：{{ item.venue.addr }}</view>
+					<view class="order-desc">数量：{{ item.order.num }}张</view>
 				</view>
 			</view>
 			<view class="order-bottom">
@@ -139,6 +166,10 @@ export default {
 				flex: 1;
 				color: #666666;
 				.order-name {
+					width: 500upx;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
 					font-size: 28upx;
 					font-weight: 600;
 					color: #222;
@@ -146,6 +177,36 @@ export default {
 				}
 				.order-desc {
 					margin-top: 18upx;
+				}
+				.order-addr{
+					width: 500upx;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+					margin-top: 18upx;
+				}
+				.content-left{
+					display: flex;
+					align-items: center;
+					color: #222;
+					.has-border{
+						width: 140upx;
+						height: 48upx;
+						line-height: 48upx;
+						text-align: center;
+						border: 1px solid lightgreen;
+						border-radius: 4upx;
+						color: blue;
+					}
+					.content-title{
+						font-size: 32upx;
+						padding-left: 15upx;
+					}
+				}
+				.turn-intro{
+					margin-top: 18upx;
+					font-size: 28upx;
+					color: #222;
 				}
 			}
 		}

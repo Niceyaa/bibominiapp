@@ -33,53 +33,45 @@
 			<view class="detail-content">
 				<view class="flex-wrapper">
 					<view class="left-desc">
-						<view class="detail-name">《{{ orderDetail.concert.name }}》- {{ orderDetail.resale_apply.concert_addr }}
+						<view class="detail-name">{{ orderDetail.concert.name }}-{{ orderDetail.concert.city_name }}
 						</view>
-						<view class="detail-time">{{ orderDetail.resale_apply.concert_time }}</view>
-						<view class="detail-time">{{ orderDetail.resale_apply.concert_addr }}
+						<view class="detail-time">{{ orderDetail.concert_time.start_at }}</view>
+						<view class="detail-time">{{ orderDetail.venue.addr }}
 						</view>
 					</view>
 					<view class="right-desc">
 						<image :src="orderDetail.concert.poster" mode=""></image>
 					</view>
 				</view>
-
-				<!-- <view class="all-tickets">
-					<view class="item" v-for="(item, i) in 3" :key="i">
-						<view>A区</view>
-						<view>12排11座</view>
-						<view>￥999.00</view>
-					</view>
-				</view> -->
 				<view class="tickets-price">
 					<view class="tickets-top">
 						<view>
-						{{ orderDetail.price }}票面
+						{{ orderData.concert_ticket.name }}
 						<text style="color: #b2b2b2;padding-left: 14upx;">({{orderDetail.price}}元)</text>
 						</view>
-						<view>x{{ orderDetail.total }}</view>
+						<view>x{{ orderDetail.num }}</view>
 					</view>
-					<view v-if="orderDetail.discounted_money" class="tickets-top">
+					<view class="tickets-top">
 						<view>
 							优惠
 						</view>
-						<view>
+						<view v-if="orderDetail.discounted_money">
 							-{{orderDetail.discounted_money}}元
 						</view>
 					</view>
 				</view>
-				<view class="total-price">总计：{{ orderDetail.price * orderDetail.total }}元</view>
+				<view class="total-price">总计：{{ orderData.money }}元</view>
 			</view>
 		</view>
 		<view v-if="status !== 'invalid'" class="order-info">
 			<view class="order-header">订单信息</view>
 			<view class="order-wrapper">
 				<view>订单编号</view>
-				<view>{{ orderDetail.resale_apply.waybill_num }}</view>
+				<view>{{ orderDetail.out_trade_no }}</view>
 			</view>
 			<view class="order-wrapper">
 				<view>下单时间</view>
-				<view>{{orderDetail.concert_time.start_at}}</view>
+				<view>{{orderDetail.created_at}}</view>
 			</view>
 		</view>
 		<view class="bottom-tab">
@@ -98,6 +90,7 @@
 </template>
 
 <script>
+	import { orderDesc } from '../../../Api/myApi/orderDesc.js';
 	import { formatDate } from "../../../common/formatDate.js"
 	import { turnOrderDesc } from "../../../Api/myApi/turnOrderDesc.js"
 	import { myModal } from "./myModal.vue"
@@ -155,20 +148,31 @@
 			}
 		},
 		onLoad(opt) {
-			this.orderId = opt.orderId;
+			this.orderId = opt.id;
 			this.status = opt.status;
 			console.log(opt.status)
 		},
 		onShow() {
-			turnOrderDesc({
+			
+			orderDesc({
+				prm: this.orderId
+			}).then(res => {
+				console.log("转票详情",res);
+				this.orderDetail = res[1].data.data;
+				this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,".")
+				this.orderDetail.created_at = this.formatDate(this.orderDetail.created_at,'-');
+			});
+			
+			
+			/* turnOrderDesc({
 				prm:this.orderId
 			}).then(res=>{
 				console.log("转票详情",res)
-				// this.orderDetail = res[1].data.data;
+				this.orderDetail = res[1].data.data;
 				this.orderDetail.resale_apply.concert_time = this.formatDate(this.orderDetail.resale_apply.concert_time,'.')
 				this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,"-")
  				console.log("转票详情",res)
-			})
+			}) */
 		}
 	};
 </script>
@@ -249,12 +253,17 @@
 						.left-desc {
 							color: #656565;
 							font-size: 24upx;
-
+							width: 480upx;
 							.detail-name {
 								padding: 0upx 0 18upx 0;
 								color: #212121;
 								font-size: 28upx;
 								font-weight: 600;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								display: -webkit-box;
+								-webkit-line-clamp:2;
+								-webkit-box-orient: vertical;
 							}
 
 							.detail-time {

@@ -13,7 +13,7 @@
 				<view class="content-right">
 					<view class="order-name">【{{ item.concert.city_name }}站】{{ item.concert.name }}</view>
 					<view class="order-desc">时间：{{ item.concert_time.start_at }}</view>
-					<view class="order-desc">地点：{{ item.venue.addr }}</view>
+					<view class="order-addr">地点：{{ item.venue.addr }}</view>
 					<view class="order-desc">数量：{{ item.num }}张</view>
 				</view>
 			</view>
@@ -156,12 +156,23 @@ export default {
 			.content-right {
 				color: #666666;
 				.order-name {
+					width: 500upx;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
 					font-size: 28upx;
 					font-weight: 600;
 					color: #222;
 					margin-bottom: 18upx;
 				}
 				.order-desc {
+					margin-top: 18upx;
+				}
+				.order-addr{
+					width: 500upx;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
 					margin-top: 18upx;
 				}
 			}

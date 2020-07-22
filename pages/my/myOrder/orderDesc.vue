@@ -17,7 +17,7 @@
 				<!-- 待付款 -->
 				<view v-if="status === 'lock'">
 					<view>待支付</view>
-					<view class="tips">请在30分钟之内完成支付</view>
+					<view class="tips">请在5分钟之内完成支付</view>
 				</view>
 				<!-- 待收货 -->
 				<view v-if="status === 'shipped'">
@@ -33,9 +33,9 @@
 			<view class="detail-content">
 				<view class="flex-wrapper">
 					<view class="left-desc">
-						<view class="detail-name">{{ orderData.concert.name }} —【{{ orderData.concert.city_name }}站】</view>
+						<view class="detail-name">{{ orderData.concert.name }}—{{ orderData.concert.city_name }}站</view>
 						<view class="detail-time">{{ orderData.concert_time.start_at }}</view>
-						<view class="detail-time">{{ orderData.venue.addr }}</view>
+						<view class="detail-addr">{{ orderData.venue.addr }}</view>
 					</view>
 					<view class="right-desc"><image :src="orderData.concert.poster" mode=""></image></view>
 				</view>
@@ -44,7 +44,7 @@
 				<view class="tickets-price">
 					<view class="tickets-top">
 						<view>
-						{{ orderData.price }}票面
+						{{ orderData.concert_ticket.name }}
 						<text style="color: #b2b2b2;padding-left: 14upx;">({{orderData.price}}元)</text>
 						</view>
 						<view>x{{ orderData.num }}</view>
@@ -53,7 +53,7 @@
 						<view>
 							优惠
 						</view>
-						<view>
+						<view v-if="orderDetail.discounted_money">
 							-{{orderData.discounted_money}}元
 						</view>
 					</view>
@@ -117,7 +117,7 @@ export default {
 				prm: this.order_id
 			}).then(res => {
 				console.log(res);
-				// this.orderData = res[1].data.data;
+				this.orderData = res[1].data.data;
 				this.orderData.concert_time.start_at = this.formatDate(this.orderData.concert_time.start_at,".")
 				this.orderData.created_at = this.formatDate(this.orderData.created_at,'-');
 			});
@@ -258,13 +258,20 @@ page {
 						font-size: 24upx;
 						width: 480upx;
 						.detail-name {
-							padding: 0upx 0 18upx 0;
 							color: #212121;
 							font-size: 28upx;
 							font-weight: 600;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							display: -webkit-box;
+							-webkit-line-clamp:2;
+							-webkit-box-orient: vertical;
 						}
 
 						.detail-time {
+							padding-top: 32upx;
+						}
+						.detail-addr {
 							padding-top: 14upx;
 						}
 					}

@@ -6,7 +6,7 @@
 				<view class="bill-left">
 					<view class="left-top">
 						<picker class="pik" fields="month" mode="date" :value="currentMonth" @change="selectMonth">
-							<text class="time">{{ currentMonth }}</text>
+							<text class="time">{{ selectedMonth }}</text>
 							<image src="../../../static/image/down.png" mode=""></image>
 						</picker>
 					</view>
@@ -16,8 +16,11 @@
 					</view>
 				</view>
 				<view class="bill-right">
-					筛选
+					<picker mode="selector" :range="typeArr" @change="changeType">
+						筛选
 					<image src="../../../static/image/down.png" mode=""></image>
+					</picker>
+					
 				</view>
 			</view>
 			<view class="bill-item" v-for="item in billList.list" :key="item.id">
@@ -41,47 +44,11 @@ import backHeader from '../../../components/childheader.vue';
 export default {
 	data() {
 		return {
-			currentMonth: '2020-07',
-			billList: {
-				list: [
-					{
-						id: 44,
-						user_id: 100004,
-						money: 4800,
-						desc: '账户余额付款买票asdfasdfasfasfasdfasfasdf',
-						status: 1,
-						updated_at: 1592901044
-					},
-					{
-						id: 29,
-						user_id: 100004,
-						money: 98901,
-						desc: '账户余额付款买票',
-						status: 1,
-						updated_at: 1592459089
-					},
-					{
-						id: 28,
-						user_id: 100004,
-						money: -98901,
-						desc: '丈夫余额付款买票',
-						status: 1,
-						updated_at: 1592293924
-					},
-					{
-						id: 1,
-						user_id: 100004,
-						money: -5000,
-						desc: null,
-						status: 0,
-						updated_at: 1590487584
-					}
-				],
-				money_count: {
-					income: 14321200,
-					expenditure: 14233200
-				}
-			}
+			selectedMonth: "",
+			currentMonth: '',
+			typeArr: ["全部","支出","收入"],
+			selectType: ["all","income","expenditure"],
+			billList: {}
 		};
 	},
 	components: { backHeader, uniCalendar },
@@ -91,15 +58,29 @@ export default {
 		}
 	},
 	methods: {
+		// 筛选type
+		changeType(e){
+			let idx = parseInt(e.detail.value);
+			moneyLog({
+				month: this.currentMonth,
+				type: this.selectType[idx]
+			}).then(res=>{
+				console.log(res)
+				this.billList = res[1].data.data;
+			})
+		},
+		// 筛选日期
 		selectMonth(e) {
 			console.log('e', e.detail.value);
+			this.currentMonth = e.detail.value;
+			let temp = this.currentMonth.split("-");
+			this.selectedMonth = `${temp[0]}年${parseInt(temp[1])}月`
 			moneyLog({
 				month:e.detail.value
 			}).then(res=>{
-				console.log(res);
-				// this.billList = res[1].data.data;
+				console.log(res)
+				this.billList = res[1].data.data;
 				this.billList.list.forEach(item => {
-					console.log(item);
 					item.updated_at = this.formatDate(item.updated_at);
 				});
 			})
@@ -125,9 +106,6 @@ export default {
 			}
 			return `${y}-${m}-${d} ${h}:${min}`;
 		},
-		changeCal(e) {
-			console.log('e', e);
-		},
 		open() {
 			this.$refs.cal.open();
 		},
@@ -143,6 +121,12 @@ export default {
 		}
 	},
 	created() {
+		let tt = new Date();
+		let y = tt.getFullYear();
+		let mon = (tt.getMonth()+1).toString().padStart(2,"0");
+		let formatMon = parseInt(mon);
+		this.selectedMonth = `${y}年${formatMon}月`;
+		this.currentMonth = `${y}-${mon}`;
 		this.getBillList();
 	}
 };
