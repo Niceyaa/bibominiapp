@@ -1,6 +1,6 @@
 <template>
 	<view class="input-code">
-		<back-header title="设置新的安全密码"></back-header>
+		<back-header backUrl="/pages/my/setting/inputCode" title="设置新的安全密码"></back-header>
 		<view class="input-code-main">
 			<view class="input-code-title">设置新的6位数字安全密码，用于账户资金变动验证</view>
 			

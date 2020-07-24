@@ -1,6 +1,6 @@
 <template>
 	<view class="safe-password">
-		<back-header title="更换手机号"></back-header>
+		<back-header backUrl="/pages/my/setting/setting" title="更换手机号"></back-header>
 		<view class="pwd-main">
 			<view class="pwd-title">验证当前绑定手机号</view>
 			<view class="pwd-tel">{{tel}}</view>

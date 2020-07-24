@@ -2,9 +2,9 @@
     <!-- 注意：header层级为最高的999，不能有其他组件的层级高过999 -->
     <!-- 公共头部组件 -->
     <view class="public-header-container">
-        <view class="public-header-title">
-            {{title}}
-        </view>
+		<view class="public-header-title" style="display: flex;justify-content: center;">
+			<view class="inner" :style="{'width':'750upx','position':'absolute','top': top,'height':height,'lineHeight':height}">{{title}}</view>
+		</view>
         <view class="public-header-search">
             <text class="address" @click="$dianji(targetAddr)">
                 {{addressDefault}}
@@ -32,6 +32,10 @@
             return {
                 onoff: true,//防止多次点击
                 addressDefault: "定位中的的",
+				top: "",
+				lineHeight: "",
+				height: "",
+				imgTop: ""
             }
         },
         props: {
@@ -40,6 +44,12 @@
             }
         },
         mounted() {
+			let menuInfo = uni.getMenuButtonBoundingClientRect();
+			this.top = menuInfo.top+"px";
+			this.height = (menuInfo.height+2)+"px";
+			this.lineHeight = menuInfo.height+"px";
+			this.imgTop = menuInfo.top+5+"px";
+			console.log("信息",menuInfo)
             qqmapsdk = new QQMapWX({
                 key: 'A5BBZ-UZHKW-NPQRW-RHBJU-KA5RQ-NNBXZ' //key
             });
@@ -188,8 +198,7 @@
 
         .public-header-title {
             width: 750rpx;
-            height: 140rpx;
-            line-height: 185rpx;
+            height: 160rpx;
             text-align: center;
             font-size: 30rpx;
             font-family: Microsoft YaHei;
@@ -199,7 +208,7 @@
 
         .public-header-search {
             width: 100%;
-            padding: 20rpx 42rpx 18rpx 39rpx;
+            padding: 0rpx 42rpx 18rpx 39rpx;
             height: 60rpx;
             position: relative;
             background-color: white;
@@ -227,7 +236,7 @@
                 height: 35rpx;
                 position: absolute;
                 left: 188rpx;
-                top: 33rpx;
+                top: 13rpx;
             }
 
             .search {

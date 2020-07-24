@@ -1,11 +1,17 @@
 <template>
 	<view class="order-detail">
 		<cover-view class="child-header">
-			<cover-view class="back-container" @click="back">
-				<cover-image class="image" src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png"></cover-image>
+				<cover-view :style="{'top':imgTop}" class="back-container">
+					<cover-image @click="back" class="image"
+						src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png">
+					</cover-image>
+				</cover-view>
+				<cover-view style="display: flex; justify-content: center;">
+					<cover-view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">订单详情</cover-view>
+				</cover-view>
+				
 			</cover-view>
-			订单详情
-		</cover-view>
+
 
 		<view class="detail-main">
 			<view class="detail-header">
@@ -103,13 +109,24 @@ export default {
 			order_id: '',
 			status: '',
 			orderData: {},
+			top: "",
+			lineHeight: "",
+			height: "",
+			imgTop: ""
 		}
 	},
 	components: { myModal },
 	onLoad(opt) {
+		
 		console.log(opt);
 		this.status = opt.status;
 		this.order_id = opt.order_id;
+		
+		let menuInfo = uni.getMenuButtonBoundingClientRect();
+		this.top = menuInfo.top+"px";
+		this.height = (menuInfo.height+2)+"px";
+		this.lineHeight = menuInfo.height+"px";
+		this.imgTop = menuInfo.top+5+"px";
 	},
 	mounted() {
 		if (this.order_id) {
@@ -140,15 +157,18 @@ export default {
 			this.onoff = i;
 		},
 		back() {
-			var pages = getCurrentPages();
-			console.log('返回上一页', pages);
-			if (pages.length <= 1) {
-				console.log('可能是分享页面');
-			} else {
-				wx.navigateBack({
-					delta: 1
-				});
-			}
+			// var pages = getCurrentPages();
+			// console.log('返回上一页', pages);
+			// if (pages.length <= 1) {
+			// 	console.log('可能是分享页面');
+			// } else {
+			// 	wx.navigateBack({
+			// 		delta: 1
+			// 	});
+			// }
+			uni.navigateTo({
+				url:`/pages/my/myOrder/myOrder?status=${this.status}`
+			})
 		},
 		// 删除订单
 		deleteOrder() {
@@ -190,38 +210,48 @@ page {
 		position: relative;
 		height: 100%;
 		background: #f6f6f6;
-
+		
+		
+		
+		
 		.child-header {
-			width: 750rpx;
-			height: 140rpx;
-			line-height: 180rpx;
-			text-align: center;
-			font-size: 30rpx;
-			font-family: Microsoft YaHei;
-			font-weight: bold;
-			color: #fff;
-			position: fixed;
-			z-index: 999;
-			background-color: #ff4557;
-
-			.back-container {
-				line-height: 180upx;
-				padding-left: 38upx;
-				padding-right: 38upx;
-				left: 0;
+		    width: 750rpx;
+		    height: 160rpx;
+		    line-height: 180rpx;
+		    text-align: center;
+		    font-size: 30rpx;
+		    font-family: Microsoft YaHei;
+		    font-weight: bold;
+		    color: #fff;
+		    position: fixed;
+		    z-index: 999;
+		    background-color: #ff4557;
+		
+		    .back-container {
+		        height: 160upx;
+		        padding-left: 38upx;
+		        padding-right: 38upx;
+		        left: 0;
+		        position: absolute;
+		
+		        .image {
+		            display: inline-block;
+		            width: 18upx;
+		            height: 30upx;
+		            vertical-align: middle;
+		
+		        }
+		    }
+			.ttt{
 				position: absolute;
-
-				.image {
-					display: inline-block;
-					width: 18upx;
-					height: 30upx;
-					vertical-align: middle;
-				}
 			}
+		
 		}
 
+		
+
 		.detail-main {
-			padding-top: 139upx;
+			padding-top: 159upx;
 
 			.detail-header {
 				background: #ff4557;

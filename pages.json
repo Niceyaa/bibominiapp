@@ -317,6 +317,13 @@
 			}
 		},
 		{
+			"path": "pages/my/myTurnOrder/personalDesc",
+			"style": {
+				"navigationBarTitleText": "转票详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/my/newMy",
 			"style": {
 				"navigationBarTitleText": "个人中心",
@@ -389,7 +396,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle":"custom"
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)

@@ -15,10 +15,10 @@
 				<text class="text">联系电话</text>
 				<input maxlength="11" type="number" v-model="tel" placeholder="请输入手机号" placeholder-style="color:#B2B2B2;font-size:28upx" />
 			</view>
-			<view class="input-item">
-				<text class="text">选择区域</text>
+			<view class="input-item no-padding">
+				<text class="text padding40">选择区域</text>
 
-				<view @tap="openAddres">{{ difineCityInfo }}</view>
+				<view class="area-width padding40" @tap="openAddres">{{ difineCityInfo }}</view>
 			</view>
 			<view class="input-item desc-address"><input type="text" v-model="descAddress" placeholder-style="color:#B2B2B2;font-size:28upx" placeholder="请输入详细地址" /></view>
 		</view>
@@ -59,7 +59,7 @@ export default {
 	components: { simpleAddress },
 	methods: {
 		back() {
-			var pages = getCurrentPages();
+			/* var pages = getCurrentPages();
 			console.log('返回上一页', pages);
 			if (pages.length <= 1) {
 				console.log('可能是分享页面');
@@ -67,7 +67,10 @@ export default {
 				wx.navigateBack({
 					delta: 1
 				});
-			}
+			} */
+			uni.navigateTo({
+				url:"/pages/my/addressManage/addressManage"
+			})
 		},
 		saveAddress() {
 			if (this.tel.length === 11 && this.name.length > 1 && this.descAddress.length > 4 && this.difineCityInfo.length > 4) {
@@ -217,8 +220,16 @@ page {
 
 				input {
 				}
+				.area-width{
+					width: 480upx;
+				}
+				.padding40{
+					padding: 40upx 0;
+				}
 			}
-
+			.no-padding{
+				padding: 0;
+			}
 			.desc-address {
 				width: 100%;
 				box-sizing: border-box;

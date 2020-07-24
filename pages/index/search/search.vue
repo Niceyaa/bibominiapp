@@ -6,7 +6,7 @@
 
         <!-- 搜索框 -->
         <view class="search-head">
-            <input class="search-kuang" placeholder="周杰伦演唱会" value="" v-model.trim="inputValue" focus
+            <input class="search-kuang" placeholder="请输入关键字" value="" v-model.trim="inputValue" focus
                 @confirm="searchFn">
             </input>
             <view class="search-icon-box" @click="startSearch()">

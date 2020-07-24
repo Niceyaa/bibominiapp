@@ -156,7 +156,7 @@
                         color: #ED1829;
                         position: absolute;
                         top: -40rpx;
-                        right: 0rpx;
+                        right: -40rpx;
 
                     }
                 }

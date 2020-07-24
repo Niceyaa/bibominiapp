@@ -240,7 +240,7 @@
                 color: rgba(34, 34, 34, 1);
                 line-height: 41rpx;
                 display: block;
-
+				letter-spacing: -1px;
                 text-overflow: -o-ellipsis-lastline;
                 overflow: hidden;
                 text-overflow: ellipsis;

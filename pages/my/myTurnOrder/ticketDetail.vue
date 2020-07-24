@@ -1,13 +1,16 @@
 <template>
 	<view class="order-detail">
 		<cover-view class="child-header">
-			<cover-view class="back-container" @click="back">
-				<cover-image class="image"
-					src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png">
-				</cover-image>
+				<cover-view :style="{'top':imgTop}" class="back-container">
+					<cover-image @click="back" class="image"
+						src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png">
+					</cover-image>
+				</cover-view>
+				<cover-view style="display: flex; justify-content: center;">
+					<cover-view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">订单详情</cover-view>
+				</cover-view>
+				
 			</cover-view>
-			订单详情
-		</cover-view>
 
 		<view class="detail-main">
 			<!-- 待取票 -->
@@ -46,7 +49,7 @@
 				<view class="tickets-price">
 					<view class="tickets-top">
 						<view>
-						{{ orderData.concert_ticket.name }}
+						{{ orderDetail.concert_ticket.name }}
 						<text style="color: #b2b2b2;padding-left: 14upx;">({{orderDetail.price}}元)</text>
 						</view>
 						<view>x{{ orderDetail.num }}</view>
@@ -60,7 +63,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="total-price">总计：{{ orderData.money }}元</view>
+				<view class="total-price">总计：{{ orderDetail.money }}元</view>
 			</view>
 		</view>
 		<view v-if="status !== 'invalid'" class="order-info">
@@ -92,7 +95,6 @@
 <script>
 	import { orderDesc } from '../../../Api/myApi/orderDesc.js';
 	import { formatDate } from "../../../common/formatDate.js"
-	import { turnOrderDesc } from "../../../Api/myApi/turnOrderDesc.js"
 	import { myModal } from "./myModal.vue"
 	export default {
 		data() {
@@ -103,6 +105,10 @@
 				modalFlag: false,
 				cancelModalFlag: false,
 				deleteModalFlag: false,
+				top: "",
+				lineHeight: "",
+				height: "",
+				imgTop: ""
 			};
 		},
 		components: { myModal },
@@ -123,7 +129,7 @@
 				this.onoff = i;
 			},
 			back() {
-				var pages = getCurrentPages();
+				/* var pages = getCurrentPages();
 				console.log('返回上一页', pages);
 				if (pages.length <= 1) {
 					console.log('可能是分享页面');
@@ -131,7 +137,10 @@
 					wx.navigateBack({
 						delta: 1
 					});
-				}
+				} */
+				uni.navigateTo({
+					url:`/pages/my/myTurnOrder/myTurnOrder?status=${this.status}`
+				})
 			},
 			cancelTurn(id) {
 				/* this.orderId = id;
@@ -151,6 +160,12 @@
 			this.orderId = opt.id;
 			this.status = opt.status;
 			console.log(opt.status)
+			
+			let menuInfo = uni.getMenuButtonBoundingClientRect();
+			this.top = menuInfo.top+"px";
+			this.height = (menuInfo.height+2)+"px";
+			this.lineHeight = menuInfo.height+"px";
+			this.imgTop = menuInfo.top+5+"px";
 		},
 		onShow() {
 			
@@ -162,17 +177,6 @@
 				this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,".")
 				this.orderDetail.created_at = this.formatDate(this.orderDetail.created_at,'-');
 			});
-			
-			
-			/* turnOrderDesc({
-				prm:this.orderId
-			}).then(res=>{
-				console.log("转票详情",res)
-				this.orderDetail = res[1].data.data;
-				this.orderDetail.resale_apply.concert_time = this.formatDate(this.orderDetail.resale_apply.concert_time,'.')
-				this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,"-")
- 				console.log("转票详情",res)
-			}) */
 		}
 	};
 </script>
@@ -186,9 +190,10 @@
 			height: 100%;
 			background: #f6f6f6;
 
+			
 			.child-header {
 			    width: 750rpx;
-			    height: 140rpx;
+			    height: 160rpx;
 			    line-height: 180rpx;
 			    text-align: center;
 			    font-size: 30rpx;
@@ -200,7 +205,7 @@
 			    background-color: #ff4557;
 			
 			    .back-container {
-			        line-height: 180upx;
+			        height: 160upx;
 			        padding-left: 38upx;
 			        padding-right: 38upx;
 			        left: 0;
@@ -214,11 +219,14 @@
 			
 			        }
 			    }
+				.ttt{
+					position: absolute;
+				}
 			
 			}
 
 			.detail-main {
-				padding-top: 139upx;
+				padding-top: 159upx;
 
 				.detail-header {
 					background: #ff4557;

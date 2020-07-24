@@ -1,6 +1,6 @@
 <template>
 	<view v-if="loginStatus" class="setting-container">
-		<back-header title="设置"></back-header>
+		<back-header backUrl="/pages/my/newMy" title="设置"></back-header>
 		<view class="setting-main">
 			<view class="info-header">
 				<view class="header-item">

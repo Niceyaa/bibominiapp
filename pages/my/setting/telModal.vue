@@ -80,6 +80,7 @@ export default {
 										uni.showToast({
 											title: '恭喜您登录成功！'
 										});
+										this.$emit('update:modalFlag', false);
 									})
 								}
 							}
@@ -99,6 +100,7 @@ export default {
 						uni.showToast({
 							title: '恭喜您登录成功！'
 						});
+						this.$emit('update:modalFlag', false);
 					}
 				});
 				this.$emit('update:modalFlag', false);
@@ -106,8 +108,12 @@ export default {
 				// 表示用户拒绝授权手机号
 				uni.showToast({
 					title: '需要授权才能访问哦',
-					icon: 'none'
+					icon: 'none',
+					duration: 1000
 				});
+				uni.navigateTo({
+					url:"/pages/my/newMy"
+				})
 			}
 		}
 	}

@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import uniCalendar from '../../../components/uni-calendar/uni-calendar.vue';
 import { moneyLog } from '../../../Api/myApi/moneyLog.js';
 import backHeader from '../../../components/childheader.vue';
 export default {
@@ -51,7 +50,7 @@ export default {
 			billList: {}
 		};
 	},
-	components: { backHeader, uniCalendar },
+	components: { backHeader },
 	watch: {
 		getBillList() {
 			console.log('处理数据');

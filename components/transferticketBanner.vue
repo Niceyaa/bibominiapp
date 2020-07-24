@@ -3,7 +3,7 @@
     <view>
         <!-- 转票求票广场 -->
         <view class="zhuanpiao-qiupiao-guangchang">
-            <view :class="current==0?'qiupiao-guangchang guangchang-active':'qiupiao-guangchang'" @click="currents(0)">
+            <view :class="current==0?'qiupiao-guangchang guangchang-active margin-less':'qiupiao-guangchang margin-less'" @click="currents(0)">
                 转票广场
                 <view class="border" v-if="current==0">
 
@@ -153,7 +153,7 @@
 <style lang="less">
     .zhuanpiao-qiupiao-guangchang {
         padding: 70upx 39upx 8upx 39upx;
-        border: 1upx solid rgba(246, 246, 246, 1);
+        border-bottom: 1upx solid rgba(246, 246, 246, 1);
 
 
         .zhuanpiao-guangchang {
@@ -172,9 +172,11 @@
             font-family: PingFang SC;
             font-weight: bold;
             color: rgba(102, 102, 102, 1);
-            margin-left: 90upx;
+            margin-left: 70upx;
         }
-
+		.margin-less{
+			margin-left: 20upx;
+		}
         .border {
             width: 60upx;
             height: 6upx;

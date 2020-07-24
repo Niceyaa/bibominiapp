@@ -1,6 +1,6 @@
 <template>
 	<view class="safe-password">
-		<back-header title="更换手机号"></back-header>
+		<back-header backUrl="/pages/my/setting/changeTel" title="更换手机号"></back-header>
 		<view class="pwd-main">
 			<view class="pwd-title">输入新的手机号</view>
 			<view class="verification-code" style="border-bottom: 1px solid #F6F6F6;">

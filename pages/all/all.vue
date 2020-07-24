@@ -243,6 +243,10 @@
                     start_at_rang: that.$store.state.timeDuan
 
                 }).then(function (data) {
+					console.log("全部页信息",data)
+					/* data[1].data.data.forEach(item=>{
+						item.name.replace(" ","");
+					}) */
                     that.$set(that.allList, that.tabCurrentIndex, data[1].data.data)
                     uni.hideLoading()
                 })
@@ -896,7 +900,7 @@
             font-weight: 400;
             color: rgba(137, 137, 137, 1);
             line-height: 56rpx;
-            margin-left: 20rpx;
+            margin-left: 30rpx;
             overflow: hidden;
 
             &:after {

@@ -3,13 +3,14 @@
 		<view class="order-item" v-for="item in turnDetail" :key="item.id">
 			<view class="order-header">
 				<view v-if="status === '2resale'" class="header-left">订单编号：{{ item.out_trade_no }}</view>
-				<view v-else class="header-left">订单编号：{{ item.order.out_trade_no }}</view>
+				<view v-else class="header-left">订单编号：{{ item.order.out_trade_no || "" }}</view>
 				<view v-if="status === '2resale'" class="header-right">待转票</view>
-				<view v-if="status === 'applying'&&item.status !== 'apply'" class="header-right">转票中</view>
-				<view v-if="status === 'applying'&&item.status === 'apply'" class="header-right">审核中</view>
+				<view v-if="status === 'applying'&&item.order_id !== 0" class="header-right">转票中</view>
+				<view v-if="status === 'applying'&&item.order_id === 0" class="header-right">审核中</view>
 				<view v-if="status === 'invalid'" class="header-right">已作废</view>
 				<view v-if="status === 'over'" class="header-right">已转出</view>
 			</view>
+			<!-- 待转票 -->
 			<view v-if="status === '2resale'" class="order-content" @click="goToTicketDetail(item.id)">
 				<image :src="item.concert.poster" mode=""></image>
 				<view class="content-right">
@@ -20,24 +21,24 @@
 					
 				</view>
 			</view>
-			<!-- 转票中处于待审核状态 -->
-		<!-- 	<view v-else-if="status === 'applying'&&item.status === 'apply'" class="order-content" @click="goToTicketDetail(item.order_id)"> -->
-			<view v-else-if="status === 'applying'" class="order-content" @click="goToTicketDetail(item.order_id)">
+			<!-- 个人转票 -->
+			<view v-if="status !== '2resale'&&item.order_id === 0" class="order-content" @click="goToPersonal(item.id)">
+			
 				<view class="content-right">
 					<view class="content-left">
 						<view class="has-border">个人转票</view>
-						<view class="content-title">碍事法师法师法师法</view>
+						<view class="content-title">{{item.resale_apply.concert_name}}</view>
 					</view>
 					<view class="turn-intro">
-						阿斯顿发沙发沙发沙发沙发发生发发发
+						{{item.resale_apply.desc}}
 					</view>
-					<view class="order-desc">时间：{{ item.concert_time.start_at }}</view>
-					<view class="order-desc">地点：{{ item.venue.addr }}</view>
-					<view class="order-desc">数量：{{ item.order.num }}张</view>
+					<view class="order-desc">时间：{{ item.resale_apply.concert_time }}</view>
+					<view class="order-desc">地点：{{ item.resale_apply.concert_addr }}</view>
+					<view class="order-desc">数量：{{ item.total }}张</view>
 				</view>
 			</view>
-			
-			<view v-else class="order-content" @click="goToTicketDetail(item.order_id)">
+			<!-- 平台转票 -->
+			<view v-if="status !== '2resale'&&item.order_id !== 0" class="order-content" @click="goToTicketDetail(item.order_id)">
 				<image :src="item.concert.poster" mode=""></image>
 				<view class="content-right">
 					<view class="order-name">【{{ item.concert.city_name }}站】{{ item.concert.name }}</view>
@@ -48,7 +49,7 @@
 			</view>
 			<view class="order-bottom">
 				<view v-if="status === '2resale'" class="totalPrice">总计：{{ item.price * item.num }}元</view>
-				<view v-else class="totalPrice">总计：{{ item.order.num * item.price }}元</view>
+				<view v-else class="totalPrice">总计：{{ item.total * item.price }}元</view>
 				<!-- 待取票 -->
 				<view v-if="status === '2resale'" class="user-operate">
 					<view class="get-ticket" @click="goToGetTicket(item.id)">我要取票</view>
@@ -93,6 +94,12 @@ export default {
 	},
 	components: { myModal },
 	methods: {
+		// 跳转个人转票详情
+		goToPersonal(id){
+			uni.navigateTo({
+				url:`/pages/my/myTurnOrder/personalDesc?id=${id}`
+			})
+		},
 		changeOnOff(i) {
 			this.onoff = i;
 		},
@@ -199,13 +206,19 @@ export default {
 						color: blue;
 					}
 					.content-title{
-						font-size: 32upx;
+						width: 500upx;
+						font-size: 28upx;
 						padding-left: 15upx;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						color: #222;
+						font-weight: 600;
 					}
 				}
 				.turn-intro{
 					margin-top: 18upx;
-					font-size: 28upx;
+					font-size: 24upx;
 					color: #222;
 				}
 			}

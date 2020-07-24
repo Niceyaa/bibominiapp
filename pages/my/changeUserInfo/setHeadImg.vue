@@ -1,13 +1,17 @@
 <template>
 	<view class="head-img">
 		<cover-view class="child-header">
-			<cover-view class="back-container" @click="back">
-				<cover-image class="image"
-					src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png">
-				</cover-image>
+				<cover-view :style="{'top':imgTop}" class="back-container">
+					<cover-image @click="back" class="image"
+						src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png">
+					</cover-image>
+				</cover-view>
+				<cover-view style="display: flex; justify-content: center;">
+					<cover-view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">修改头像</cover-view>
+				</cover-view>
+				
 			</cover-view>
-			我的头像
-		</cover-view>
+		
 		<view class="headimg-main">
 			<image :src="preSrc" mode=""></image>
 			<view class="change-wrapper">
@@ -27,7 +31,11 @@
 			return {
 				errMsg:'',
 				showOrNot:false,
-				preSrc: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1591079014819&di=11933c0b48403bb5b92138b25b4c6711&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F14%2F75%2F01300000164186121366756803686.jpg"
+				preSrc: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1591079014819&di=11933c0b48403bb5b92138b25b4c6711&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F14%2F75%2F01300000164186121366756803686.jpg",
+				top: "",
+				lineHeight: "",
+				height: "",
+				imgTop: ""
 			}
 		},
 		components:{errModal},
@@ -61,6 +69,7 @@
 								type:"file"
 							},
 							success(eee){
+								console.log(eee)
 								let jsonData = JSON.parse(eee.data);
 								let fileImg = jsonData.data.file;
 								updateUserInfo({
@@ -90,6 +99,12 @@
 			}
 		},
 		onShow() {
+			let menuInfo = uni.getMenuButtonBoundingClientRect();
+			this.top = menuInfo.top+"px";
+			this.height = (menuInfo.height+2)+"px";
+			this.lineHeight = menuInfo.height+"px";
+			this.imgTop = menuInfo.top+5+"px";
+			
 			this.preSrc = uni.getStorageSync("headImg");
 		}
 	}
@@ -105,7 +120,7 @@
 
 			.child-header {
 			    width: 750rpx;
-			    height: 140rpx;
+			    height: 160rpx;
 			    line-height: 180rpx;
 			    text-align: center;
 			    font-size: 30rpx;
@@ -117,7 +132,7 @@
 			    background-color: #000;
 			
 			    .back-container {
-			        line-height: 180upx;
+			        height: 160upx;
 			        padding-left: 38upx;
 			        padding-right: 38upx;
 			        left: 0;
@@ -131,6 +146,9 @@
 			
 			        }
 			    }
+				.ttt{
+					position: absolute;
+				}
 			
 			}
 

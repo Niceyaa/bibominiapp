@@ -1,7 +1,7 @@
 <template>
 	<view class="input-code">
-		<back-header v-if="!isPwd" title="设置安全密码"></back-header>
-		<back-header v-else title="修改安全密码"></back-header>
+		<back-header  backUrl="/pages/my/setting/setSafePassword" v-if="!isPwd" title="设置安全密码"></back-header>
+		<back-header  backUrl="/pages/my/setting/setting" v-else title="修改安全密码"></back-header>
 		<view class="input-code-main">
 			<view v-if="!isPwd" class="input-code-title">请设置6位数字安全密码，用于账户资金变动验证</view>
 			<view v-else class="input-code-title">请输入当前密码，以验证身份</view>

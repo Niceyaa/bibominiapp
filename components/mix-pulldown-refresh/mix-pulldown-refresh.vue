@@ -65,6 +65,7 @@
 		},
 		methods: {
 			pageTouchstart(e) {
+				console.log("touchstart",e)
 				touchending = false;
 				this.pageTransition = 0;
 				startY = e.touches[0].pageY;

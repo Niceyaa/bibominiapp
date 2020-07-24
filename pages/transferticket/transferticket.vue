@@ -15,7 +15,7 @@
             </swiper-item> -->
             <swiper-item>
                 <view class="swiper-item index-swiper-item">
-                    <image class="image-width" :src="resale_square" v-if="resale_square!=null" mode="widthFix"
+                    <image @click="goToDetail" class="image-width" :src="resale_square" v-if="resale_square!=null" mode="widthFix"
                         alt="加载中">
                     </image>
                 </view>
@@ -52,6 +52,7 @@
         name: "zhuanpiao",
         data() {
             return {
+				jumpId: null,
 				onoff:false,
                 resale_square: null,
                 swiperHeight: 0,//初始化swiper的高度
@@ -97,11 +98,10 @@
                 that.qiupiaoguangchang = data[1].data.data
             })
             //转票广告
-            guanggao({
-
-            }, 'resale_square').then(function (data) {
+            guanggao({}, 'resale_square').then(function (data) {
                 that.resale_square = data[1].data.data.img;
-                console.log(data[1].data.data)
+				that.jumpId = data[1].data.data.jump_value
+                console.log("转票广告",data[1].data.data)
             })
 
         },
@@ -120,7 +120,12 @@
 			},
             qiupiao() {
                this.onoff = true;
-            }
+            },
+			goToDetail(){
+				uni.navigateTo({
+					url:`/pages/index/yanchudetails/yanchudetails?id=${this.jumpId}`
+				})
+			}
         }
     }
 </script>
@@ -144,7 +149,7 @@
 
                 .image-width {
                     width: 670upx;
-                    height: 170upx;
+                    height: 170upx!important;
                     border-radius: 10upx;
                 }
             }

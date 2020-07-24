@@ -1,6 +1,6 @@
 <template>
 	<view class="address-manage-container" v-if="loginStatus">
-		<back-header title="地址管理"></back-header>
+		<back-header backUrl="/pages/my/newMy" title="地址管理"></back-header>
 		<view class="address-main" v-if="haveAddressList">
 			<view class="address-item" v-for="item in addressList" :key="item.id">
 				<view class="address-top">
@@ -13,7 +13,7 @@
 						<image v-if="item.is_default === 1"
 							src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/myImg/address/xuanzhong.png">
 						</image>
-						<image v-else
+						<image v-else @click="setDefault(item)"
 							src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/myImg/address/weixuanzhong.png">
 						</image>
 					</view>
@@ -187,6 +187,7 @@
 						align-items: center;
 
 						text {
+							padding: 30upx 0;
 							display: block;
 						}
 

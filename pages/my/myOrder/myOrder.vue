@@ -1,6 +1,6 @@
 <template>
 	<view class="my-order" v-if="loginStatus">
-		<back-head title="我的订单"></back-head>
+		<back-head backUrl="/pages/my/newMy" title="我的订单"></back-head>
 		<view class="my-order-main">
 			<view class="order-navigator">
 				<view class="header-wrapper" @click="changeOrderStatus('payed')">
@@ -21,9 +21,7 @@
 					<view class="litter-wrapper"><view v-if="status === 'lock'" class="red-sign"></view></view>
 				</view>
 			</view>
-			<view v-if="noOrder" class="order-detail">
-				<common-order :orderData="orderData" :status="status"></common-order>
-			</view>
+			<view v-if="noOrder" class="order-detail"><common-order :orderData="orderData" :status="status"></common-order></view>
 			<view v-else class="no-list">
 				<view class="other-container">
 					<image src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/temp/noorder.png" mode=""></image>
@@ -100,7 +98,7 @@ export default {
 					}).then(res => {
 						console.log(res, stu);
 						this.orderData = res[1].data.data;
-						
+
 						this.getLen();
 						this.orderData.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
@@ -135,23 +133,39 @@ export default {
 			console.log('我是子组件传过来的值', e);
 		}
 	},
-	onLoad() {
+	onLoad(opt) {
 		if (uni.getStorageSync('loginStatus')) {
 			this.loginStatus = true;
 
-			// 页面初始化时，请求一次待取票接口，获取数据
-			orderList({
-				prm: 'payed'
-			}).then(res => {
-				console.log(res);
-				this.orderData = res[1].data.data;
+			if (opt.status) {
+				this.status = opt.status;
+				orderList({
+					prm: this.status
+				}).then(res => {
+					console.log(res);
+					this.orderData = res[1].data.data;
 
-				this.getLen();
-				this.orderData.forEach(item => {
-					item.concert_time.start_at = formatDate(item.concert_time.start_at);
+					this.getLen();
+					this.orderData.forEach(item => {
+						item.concert_time.start_at = formatDate(item.concert_time.start_at);
+					});
+					this.$emit('isNull', this.orderData);
 				});
-				this.$emit('isNull', this.orderData);
-			});
+			} else {
+				// 页面初始化时，请求一次待取票接口，获取数据
+				orderList({
+					prm: 'payed'
+				}).then(res => {
+					console.log(res);
+					this.orderData = res[1].data.data;
+
+					this.getLen();
+					this.orderData.forEach(item => {
+						item.concert_time.start_at = formatDate(item.concert_time.start_at);
+					});
+					this.$emit('isNull', this.orderData);
+				});
+			}
 		} else {
 			this.loginStatus = false;
 		}
@@ -167,7 +181,7 @@ page {
 		background: #f6f6f6;
 		position: relative;
 		.my-order-main {
-			padding-top: 140upx;
+			padding-top: 160upx;
 			height: 100%;
 			box-sizing: border-box;
 			.order-navigator {

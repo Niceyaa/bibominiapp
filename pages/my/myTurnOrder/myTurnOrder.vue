@@ -1,6 +1,6 @@
 <template>
 	<view v-if="loginStatus" class="my-order">
-		<back-header title="我的转票"></back-header>
+		<back-header backUrl="/pages/my/newMy" title="我的转票"></back-header>
 		<view class="my-order-main">
 			<view class="order-navigator">
 				<view class="header-wrapper" @click="changeOrderStatus('2resale')">
@@ -58,6 +58,7 @@ export default {
 	methods: {
 		// 改变导航栏
 		changeOrderStatus(status) {
+			this.turnDetail = [];
 			this.status = status;
 			this.noOrder = true;
 
@@ -71,7 +72,7 @@ export default {
 						prm: stu
 					}).then(res => {
 						console.log(res);
-						
+
 						this.turnDetail = res[1].data.data;
 						this.getLen();
 						that.turnDetail.forEach(item => {
@@ -88,7 +89,12 @@ export default {
 						that.turnDetail = res[1].data.data;
 						this.getLen();
 						that.turnDetail.forEach(item => {
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							if (item.concert_time) {
+								item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							}
+							if (item.order_id === 0) {
+								item.resale_apply.concert_time = formatDate(item.resale_apply.concert_time);
+							}
 						});
 					});
 					break;
@@ -101,7 +107,12 @@ export default {
 						this.turnDetail = res[1].data.data;
 						this.getLen();
 						this.turnDetail.forEach(item => {
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							if (item.concert_time) {
+								item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							}
+							if (item.order_id === 0) {
+								item.resale_apply.concert_time = formatDate(item.resale_apply.concert_time);
+							}
 						});
 					});
 					break;
@@ -114,7 +125,12 @@ export default {
 						this.turnDetail = res[1].data.data;
 						this.getLen();
 						this.turnDetail.forEach(item => {
-							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							if (item.concert_time) {
+								item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							}
+							if (item.order_id === 0) {
+								item.resale_apply.concert_time = formatDate(item.resale_apply.concert_time);
+							}
 						});
 					});
 					break;
@@ -130,21 +146,40 @@ export default {
 			}
 		}
 	},
-	onLoad() {
+	onLoad(opt) {
 		if (uni.getStorageSync('loginStatus')) {
 			this.loginStatus = true;
-			
-			orderList({
-				prm: "2resale"
-			}).then(res => {
-				console.log(res);
-				
-				this.turnDetail = res[1].data.data;
-				this.getLen();
-				this.turnDetail.forEach(item => {
-					item.concert_time.start_at = formatDate(item.concert_time.start_at);
+
+			if (opt.status) {
+				this.status = opt.status;
+				turnOrderList({
+					prm: this.status
+				}).then(res => {
+					console.log(res);
+					this.turnDetail = res[1].data.data;
+					this.getLen();
+					this.turnDetail.forEach(item => {
+						if (item.concert_time) {
+							item.concert_time.start_at = formatDate(item.concert_time.start_at);
+						}
+						if (item.order_id === 0) {
+							item.resale_apply.concert_time = formatDate(item.resale_apply.concert_time);
+						}
+					});
 				});
-			});
+			} else {
+				orderList({
+					prm: '2resale'
+				}).then(res => {
+					console.log(res);
+
+					this.turnDetail = res[1].data.data;
+					this.getLen();
+					this.turnDetail.forEach(item => {
+						item.concert_time.start_at = formatDate(item.concert_time.start_at);
+					});
+				});
+			}
 		} else {
 			this.loginStatus = false;
 		}

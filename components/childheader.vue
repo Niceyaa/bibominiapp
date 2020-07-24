@@ -1,11 +1,17 @@
 <template>
     <cover-view class="child-header">
-        <cover-view class="back-container" @click="back">
-            <cover-image class="image"
+        <cover-view :style="{'top':imgTop}" class="back-container">
+            <cover-image @click="lcgBack" v-if="backUrl" class="image"
                 src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/fanhui.png">
             </cover-image>
+			<cover-image @click="back" v-else class="image"
+			    src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/fanhui.png">
+			</cover-image>
         </cover-view>
-        {{title}}
+		<cover-view style="display: flex; justify-content: center;">
+			<cover-view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">{{title}}</cover-view>
+		</cover-view>
+		
     </cover-view>
 </template>
 
@@ -14,14 +20,24 @@
         name: "childheader",
         data() {
             return {
-
+				top: "",
+				lineHeight: "",
+				height: "",
+				imgTop: ""
             }
         },
         props: {
-            title: ""
+            title: {type:String},
+			backUrl: {type:String}
         },
-        onLoad() {
-
+        mounted() {
+			let menuInfo = uni.getMenuButtonBoundingClientRect();
+			this.top = menuInfo.top+"px";
+			this.height = (menuInfo.height+2)+"px";
+			this.lineHeight = menuInfo.height+"px";
+			this.imgTop = menuInfo.top+5+"px";
+			let a = uni.upx2px(menuInfo.top)
+			console.log("菜单栏信息",a,menuInfo)
         },
         methods: {
             back() {
@@ -35,7 +51,20 @@
                     })
                 }
 
-            }
+            },
+			lcgBack(){
+				let {backUrl} = this.$props;
+				if(backUrl.search("newMy")>1){
+					uni.switchTab({
+						url:backUrl
+					})
+				}else{
+					uni.navigateTo({
+						url:backUrl
+					})
+				}
+				
+			}
         }
     }
 </script>
@@ -43,7 +72,7 @@
 <style lang="less">
     .child-header {
         width: 750rpx;
-        height: 140rpx;
+        height: 160rpx;
         line-height: 180rpx;
         text-align: center;
         font-size: 30rpx;
@@ -55,7 +84,7 @@
         background-color: white;
 
         .back-container {
-            line-height: 180upx;
+            height: 160upx;
             padding-left: 38upx;
             padding-right: 38upx;
             left: 0;
@@ -69,6 +98,39 @@
 
             }
         }
+		.ttt{
+			position: absolute;
+		}
 
     }
+	// .child-header {
+	//     width: 750rpx;
+	//     height: 140rpx;
+	//     line-height: 180rpx;
+	//     text-align: center;
+	//     font-size: 30rpx;
+	//     font-family: Microsoft YaHei;
+	//     font-weight: bold;
+	//     color: #000000;
+	//     position: fixed;
+	//     z-index: 999;
+	//     background-color: white;
+	
+	//     .back-container {
+	//         line-height: 180upx;
+	//         padding-left: 38upx;
+	//         padding-right: 38upx;
+	//         left: 0;
+	//         position: absolute;
+	
+	//         .image {
+	//             display: inline-block;
+	//             width: 18upx;
+	//             height: 30upx;
+	//             vertical-align: middle;
+	
+	//         }
+	//     }
+	
+	// }
 </style>
