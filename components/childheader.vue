@@ -1,18 +1,18 @@
 <template>
-    <cover-view class="child-header">
-        <cover-view :style="{'top':imgTop}" class="back-container">
-            <cover-image @click="lcgBack" v-if="backUrl" class="image"
+    <view class="child-header">
+        <view :style="{'top':imgTop}" class="back-container">
+            <image @click="lcgBack" v-if="backUrl" class="image"
                 src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/fanhui.png">
-            </cover-image>
-			<cover-image @click="back" v-else class="image"
+            </image>
+			<image @click="back" v-else class="image"
 			    src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/fanhui.png">
-			</cover-image>
-        </cover-view>
-		<cover-view style="display: flex; justify-content: center;">
-			<cover-view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">{{title}}</cover-view>
-		</cover-view>
+			</image>
+        </view>
+		<view class="nothing" style="display: flex; justify-content: center;">
+			<view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">{{title}}</view>
+		</view>
 		
-    </cover-view>
+    </view>
 </template>
 
 <script>
@@ -35,7 +35,7 @@
 			this.top = menuInfo.top+"px";
 			this.height = (menuInfo.height+2)+"px";
 			this.lineHeight = menuInfo.height+"px";
-			this.imgTop = menuInfo.top+5+"px";
+			this.imgTop = menuInfo.top+9+"px";
 			let a = uni.upx2px(menuInfo.top)
 			console.log("菜单栏信息",a,menuInfo)
         },
@@ -85,6 +85,7 @@
 
         .back-container {
             height: 160upx;
+			box-sizing: border-box;
             padding-left: 38upx;
             padding-right: 38upx;
             left: 0;
@@ -94,13 +95,17 @@
                 display: inline-block;
                 width: 18upx;
                 height: 30upx;
-                vertical-align: middle;
+                vertical-align: top;
 
             }
         }
-		.ttt{
-			position: absolute;
+		.nothing{
+			.ttt{
+				position: fixed;
+				z-index: 10000;
+			}
 		}
+		
 
     }
 	// .child-header {

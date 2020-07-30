@@ -1,16 +1,16 @@
 <template>
 	<view class="order-detail">
-		<cover-view class="child-header">
-				<cover-view :style="{'top':imgTop}" class="back-container">
-					<cover-image @click="back" class="image"
+		<view class="child-header">
+				<view :style="{'top':imgTop}" class="back-container">
+					<image @click="back" class="image"
 						src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/componentImg/afd2adf0772849d3ae1963ef4a53f99.png">
-					</cover-image>
-				</cover-view>
-				<cover-view style="display: flex; justify-content: center;">
-					<cover-view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">订单详情</cover-view>
-				</cover-view>
+					</image>
+				</view>
+				<view style="display: flex; justify-content: center;">
+					<view class="ttt" :style="{'height':height,'top':top,'lineHeight':height}">订单详情</view>
+				</view>
 				
-			</cover-view>
+			</view>
 
 		<view class="detail-main">
 			<!-- 待取票 -->
@@ -89,6 +89,7 @@
 		<my-modal :orderId="orderId" status="delete" v-if="deleteModalFlag" :modalFlag.sync="deleteModalFlag"
 			title="删除订单" desc="是否确认删除订单"></my-modal>
 		<appAlert @changeAppAlertOnoff="changeOnOff" :appAlertOnoff="onoff"></appAlert>
+		<err-modal :tipDesc="errMsg" :showOrNot.sync="showOrNot"></err-modal>
 	</view>
 </template>
 
@@ -96,9 +97,12 @@
 	import { orderDesc } from '../../../Api/myApi/orderDesc.js';
 	import { formatDate } from "../../../common/formatDate.js"
 	import { myModal } from "./myModal.vue"
+	import errModal from '../../../components/errModal.vue'
 	export default {
 		data() {
 			return {
+				errMsg: "",
+				showOrNot: false,
 				onoff:false,
 				orderDetail: {},
 				status: "",
@@ -111,7 +115,7 @@
 				imgTop: ""
 			};
 		},
-		components: { myModal },
+		components: { myModal,errModal },
 		methods: {
 			formatDate(t,stu) {
 				let dd = new Date(t);
@@ -159,13 +163,13 @@
 		onLoad(opt) {
 			this.orderId = opt.id;
 			this.status = opt.status;
-			console.log(opt.status)
+			console.log(opt)
 			
 			let menuInfo = uni.getMenuButtonBoundingClientRect();
 			this.top = menuInfo.top+"px";
 			this.height = (menuInfo.height+2)+"px";
 			this.lineHeight = menuInfo.height+"px";
-			this.imgTop = menuInfo.top+5+"px";
+			this.imgTop = menuInfo.top+9+"px";
 		},
 		onShow() {
 			
@@ -173,9 +177,14 @@
 				prm: this.orderId
 			}).then(res => {
 				console.log("转票详情",res);
-				this.orderDetail = res[1].data.data;
-				this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,".")
-				this.orderDetail.created_at = this.formatDate(this.orderDetail.created_at,'-');
+				if(res[1].data.err_code === 2000){
+					this.errMsg = res[1].data.err_msg;
+					this.showOrNot = true;
+				}else{
+					this.orderDetail = res[1].data.data;
+					this.orderDetail.concert_time.start_at = this.formatDate(this.orderDetail.concert_time.start_at,".")
+					this.orderDetail.created_at = this.formatDate(this.orderDetail.created_at,'-');
+				}
 			});
 		}
 	};
@@ -215,7 +224,7 @@
 			            display: inline-block;
 			            width: 18upx;
 			            height: 30upx;
-			            vertical-align: middle;
+			            vertical-align: top;
 			
 			        }
 			    }

@@ -46,7 +46,7 @@ export default {
 			selectedMonth: "",
 			currentMonth: '',
 			typeArr: ["全部","支出","收入"],
-			selectType: ["all","income","expenditure"],
+			selectType: ["all","expenditure","income"],
 			billList: {}
 		};
 	},
@@ -66,6 +66,9 @@ export default {
 			}).then(res=>{
 				console.log(res)
 				this.billList = res[1].data.data;
+				this.billList.list.forEach(item => {
+					item.updated_at = this.formatDate(item.updated_at);
+				});
 			})
 		},
 		// 筛选日期
@@ -111,7 +114,7 @@ export default {
 		getBillList() {
 			moneyLog().then(res => {
 				console.log(res);
-				// this.billList = res[1].data.data;
+				this.billList = res[1].data.data;
 				this.billList.list.forEach(item => {
 					console.log(item);
 					item.updated_at = this.formatDate(item.updated_at);

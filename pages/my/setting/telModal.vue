@@ -78,7 +78,7 @@ export default {
 											url: '/pages/my/newMy'
 										});
 										uni.showToast({
-											title: '恭喜您登录成功！'
+											title: '登录成功！'
 										});
 										this.$emit('update:modalFlag', false);
 									})

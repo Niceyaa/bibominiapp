@@ -43,34 +43,38 @@
                     </view>
                     <view class="haibao-desc">
                         <view class="haibao-title">
+							<image v-if="noTickets" class="no-tickets" src="../../../static/image/222.png" mode=""></image>
                             【{{detailList.concert.city_name}}站】{{detailList.concert.name}}
                         </view>
-                        <view class="haibao-time">
-                            <image class=""
-                                src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/indexImg/shijian.png" />
-                            <text class="" selectable="false" space="false" decode="false">
-                                {{detailList.concert.start_at | formatTimes}}
-                            </text>
-
-                        </view>
-                        <view class="haibao-address">
-                            <image class=""
-                                src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/indexImg/dingwei.png" />
-                            <text class="">
-                                {{detailList.venue.addr}}
-                            </text>
-                            <view class="xian">
-
-                            </view>
-                            <view class="quna" @click="openAddress">
-                                <image class=""
-                                    src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/indexImg/daohang.png" />
-                                <text class="" selectable="false" space="false" decode="false">
-                                    {{juli}}
-                                </text>
-                            </view>
-
-                        </view>
+						<view class="bottom-wrapper">
+							<view class="haibao-time">
+							    <image class=""
+							        src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/indexImg/shijian.png" />
+							    <text class="" selectable="false" space="false" decode="false">
+							        {{detailList.concert.start_at | formatTimes}}
+							    </text>
+							
+							</view>
+							<view class="haibao-address">
+							    <image class=""
+							        src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/indexImg/dingwei.png" />
+							    <text class="">
+							        {{detailList.venue.addr}}
+							    </text>
+							    <view class="xian">
+							
+							    </view>
+							    <view class="quna" @click="openAddress">
+							        <image class=""
+							            src="https://novelsys.oss-cn-shenzhen.aliyuncs.com/ticket/static/image/indexImg/daohang.png" />
+							        <text class="" selectable="false" space="false" decode="false">
+							            {{juli}}
+							        </text>
+							    </view>
+							
+							</view>
+						</view>
+                      
                     </view>
                 </view>
                 <!-- 海报模糊背景 -->
@@ -216,7 +220,7 @@
         </view>
         <!-- </scroll-view> -->
         <view class="zhanwei-bottom"></view>
-        <bottomBtn :detailsId="detailsId" :subscribe="detailList.subscribe" v-if="detailsId!=null && detailList!=null"
+        <bottomBtn :hasTickets="noTickets" :detailsId="detailsId" :subscribe="detailList.subscribe" v-if="detailsId!=null && detailList!=null"
             @clearYanchu="clearYanchu" @changeAppAlertOnoff="changeAppAlertOnoff">
         </bottomBtn>
         <appAlert :appAlertOnoff="appAlertOnoff" @changeAppAlertOnoff="changeAppAlertOnoff"></appAlert>
@@ -237,6 +241,7 @@
         name: "",
         data() {
             return {
+				noTickets: false,
                 demoTwo: null,
                 demoOne: null,
                 containerHeight: null,
@@ -281,6 +286,10 @@
                 detail({
                     city_code: options.cityCode,
                 }, options.id).then(function (data) {
+					// 当concert.status = -2 时，表示缺票
+					if(data[1].data.data.concert.status === -2){
+						that.noTickets = true;
+					}
                     that.resultLongitude = parseFloat(data[1].data.data.venue.latitude);
                     that.resultLatitude = parseFloat(data[1].data.data.venue.longitude);
                     console.log(data[1].data.data)
@@ -305,6 +314,10 @@
                 detail({
                     city_code: this.$store.state.cityCode,
                 }, options.id).then(function (data) {
+					// 当concert.status = -2 时，表示缺票
+					if(data[1].data.data.concert.status === -2){
+						that.noTickets = true;
+					}
                     that.resultLongitude = parseFloat(data[1].data.data.venue.latitude);
                     that.resultLatitude = parseFloat(data[1].data.data.venue.longitude);
                     console.log(data[1].data.data)
@@ -813,7 +826,7 @@
     .yanchudetails-haibao {
         width: 750rpx;
         min-height: 391rpx;
-        padding: 27rpx 37rpx;
+        padding: 47rpx 37rpx;
         box-sizing: border-box;
         -webkit-box-sizing: border-box;
         background-color: rgba(0, 0, 0, 0.6);
@@ -822,15 +835,29 @@
         .haibao-desc {
             width: 431rpx;
             float: right;
-
+			position: relative;
+			height: 287upx;
+			
             .haibao-title {
                 font-size: 32rpx;
                 font-family: PingFang SC;
                 font-weight: 500;
                 color: rgba(255, 255, 255, 1);
                 line-height: 58rpx;
+				.no-tickets{
+					width: 131upx;
+					height: 40upx;
+					vertical-align: middle;
+					border-radius: 0;
+				}
             }
-
+			
+			.bottom-wrapper{
+				position: absolute;
+				bottom: 0;
+				left: 0;
+			}
+			
             .haibao-time {
 
                 image {

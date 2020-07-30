@@ -75,9 +75,6 @@
 
 <script>
 	import backHeader from '../../../components/childheader.vue';
-	import { phoneCodeLogin } from "../../../Api/myApi/phoneCodeLogin.js"
-	import { wxLogin } from "../../../Api/myApi/wxLogin.js"
-	import { qqLogin } from "../../../Api/myApi/qqLogin.js"
 	import { getTelCode } from "../../../Api/myApi/getTelCode.js"
 	export default {
 		data() {

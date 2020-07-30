@@ -5,7 +5,7 @@
 				<image @click="goToPage('/pages/my/changeUserInfo/changeUserInfo')" class="head-desc"
 					:src="userInfo.img" mode=""></image>
 				<view class="login-wrapper">
-					<button class="login-btn" open-type="getUserInfo"
+					<button :class="{'login-btn':true,'no-padding':loginStatus}" open-type="getUserInfo"
 						@getuserinfo="bindgetuserinfo">{{ userInfo.nickName }}</button>
 					<view v-if="!loginStatus" class="login-tip">登录以同步个人订单信息</view>
 				</view>
@@ -65,6 +65,7 @@
 	import { loginApi } from '../../Api/userApi';
 	import { authTel } from '../../Api/myApi/authTel';
 	import { telModal } from './setting/telModal';
+	import { getUserInfoAtSet } from "../../Api/myApi/getUserInfoAtSet.js"
 	export default {
 		data() {
 			return {
@@ -171,7 +172,6 @@
 			},
 			// 获取用户信息后登录
 			bindgetuserinfo(e) {
-				console.log('我也是测试', e);
 				let that = this;
 				if (uni.getStorageSync('loginStatus') === true) {
 					uni.navigateTo({
@@ -182,7 +182,6 @@
 				uni.login({
 					provider: 'weixin',
 					success(loginRes) {
-						console.log('loginRes', loginRes);
 						uni.getUserInfo({
 							lang: 'zh_CN',
 							success(res) {
@@ -201,11 +200,9 @@
 									// 保存sign
 									console.log("api", data);
 									if (data[1].data.err_code === 302) {
-										console.log('还未授权');
 										uni.setStorageSync('sign', data[1].data.data.sign);
 										that.isTel = true;
 									} else {
-										console.log('授权之后');
 										that.userInfo.nickName = data[1].data.data.nickname;
 										that.userInfo.img = data[1].data.data.img;
 										that.loginStatus = true;
@@ -228,6 +225,15 @@
 				uni.navigateTo({
 					url: '/pages/my/myOrder/myOrder'
 				});
+			}
+		},
+		// 当token存在时，用户没进入一次个人中心，更新一次token值
+		onLoad() {
+			if(uni.getStorageSync("loginToken")){
+				getUserInfoAtSet().then(data => {
+					console.log("更新token", data);
+					uni.setStorageSync('loginToken', data[1].data.data.token);
+				})
 			}
 		}
 	};
@@ -282,6 +288,9 @@
 								height: 45rpx%;
 								transform: scale(1);
 								position: relative;
+							}
+							&.no-padding{
+								padding: 0;
 							}
 						}
 

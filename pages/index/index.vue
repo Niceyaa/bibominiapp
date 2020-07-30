@@ -22,14 +22,14 @@
 		<vocalconcert :chosen="chosen" v-if="chosen!=null"></vocalconcert>
 		<!-- 广告位置 -->
 		<view class="guanggao" v-if="chosen!=null">
-			<image class="" v-if="chosen_belowSrc!=null" :src="chosen_belowSrc" mode="widthFix" />
+			<image @click="goDetail(chosenValue)" class="" v-if="chosen_belowSrc!=null" :src="chosen_belowSrc" mode="widthFix" />
 		</view>
 		<!-- 精选推荐 -->
 		<min-title title="精选推荐" v-if="newList!=null"></min-title>
 		<bangdan :bangdanlist="newList" v-if="newList!=null"></bangdan>
 		<!-- 广告位置 -->
 		<view class="guanggao" v-if="newList!=null">
-			<image class="" v-if="new_below!=null" :src="new_below" mode="widthFix" />
+			<image @click="goDetail(newBelowValue)" class="" v-if="new_below!=null" :src="new_below" mode="widthFix" />
 		</view>
 		<!-- 小标题 -->
 		<!-- <min-title title="近期热门"></min-title> -->
@@ -87,6 +87,8 @@
 		},
 		data() {
 			return {
+				newBelowValue: "",//最新榜单下方广告跳转详情id值
+				chosenValue: "",//超值精选下方广告跳转详情id值
 				chosen_belowSrc: null, //超值精选下方广告
 				new_below: null, //最新榜单下方
 				noRequest: true,
@@ -126,14 +128,17 @@
 			guanggao({
 
 			}, 'chosen_below').then(function (data) {
+				console.log("超值精选下方广告",data)
 				that.chosen_belowSrc = data[1].data.data.img;
-				console.log(data[1].data.data.img)
+				that.chosenValue = data[1].data.data.jump_value;
 			})
 			// 获取广告位，最新榜单下方
 			guanggao({
 
 			}, 'new_below').then(function (data) {
+				console.log("最新榜单下方广告",data)
 				that.new_below = data[1].data.data.img;
+				that.newBelowValue = data[1].data.data.jump_value;
 			})
 
 			//获取演唱会小标签
@@ -264,6 +269,12 @@
 			},
 			itemTap(item) {
 				console.log(item);
+			},
+			// 广告跳转详情
+			goDetail(id){
+				uni.navigateTo({
+					url:`/pages/index/yanchudetails/yanchudetails?id=${id}`
+				})
 			}
 		},
 		watch: {
@@ -328,7 +339,7 @@
 
 			image {
 				width: 100%;
-				height: 160rpx;
+				height: 160rpx!important;
 			}
 		}
 	}

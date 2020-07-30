@@ -33,16 +33,21 @@
             </cover-view>
         </cover-view>
         <!-- 按钮 -->
-        <cover-view class="cover-btn" scroll-top="0" @click="tips">
+      <cover-view v-if="!hasTickets" class="cover-btn" scroll-top="0" @click="tips">
             <button class="btn-goupiao btn">
                 我要购票
             </button>
         </cover-view>
-        <cover-view class="cover-btn" scroll-top="0" @click="tips">
+        <cover-view v-if="!hasTickets" class="cover-btn" scroll-top="0" @click="tips">
             <button class="btn-zhuanpiao btn">
                 立即转票
             </button>
         </cover-view>
+		<cover-view v-if="hasTickets" class="cover-btn" scroll-top="0" @click="tips">
+		    <button class="btn-zhuanpiao btn notickets">
+		        缺票登记
+		    </button>
+		</cover-view>
     </cover-view>
 </template>
 
@@ -64,8 +69,10 @@
             },
             subscribe: {
                 type: Number,
-
-            }
+            },
+			hasTickets: {
+				type: Boolean,
+			}
 
         },
         methods: {
@@ -145,6 +152,11 @@
         .btn-zhuanpiao {
             background: rgba(255, 70, 112, 1);
         }
+		
+		.notickets{
+			width: 510upx;
+			background: #FB8A25;
+		}
 
 
         .shoucang {

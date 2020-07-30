@@ -39,6 +39,7 @@
                 prices: [],
                 max: 0,
                 activeIndex: 0,
+				
             }
         },
         mounted() {

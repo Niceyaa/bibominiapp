@@ -152,21 +152,36 @@ export default {
 
 			if (opt.status) {
 				this.status = opt.status;
-				turnOrderList({
-					prm: this.status
-				}).then(res => {
-					console.log(res);
-					this.turnDetail = res[1].data.data;
-					this.getLen();
-					this.turnDetail.forEach(item => {
-						if (item.concert_time) {
+				if(this.status === '2resale'){
+					orderList({
+						prm: '2resale'
+					}).then(res => {
+						console.log(res);
+					
+						this.turnDetail = res[1].data.data;
+						this.getLen();
+						this.turnDetail.forEach(item => {
 							item.concert_time.start_at = formatDate(item.concert_time.start_at);
-						}
-						if (item.order_id === 0) {
-							item.resale_apply.concert_time = formatDate(item.resale_apply.concert_time);
-						}
+						});
 					});
-				});
+				}else{
+					turnOrderList({
+						prm: this.status
+					}).then(res => {
+						console.log(res);
+						this.turnDetail = res[1].data.data;
+						this.getLen();
+						this.turnDetail.forEach(item => {
+							if (item.concert_time) {
+								item.concert_time.start_at = formatDate(item.concert_time.start_at);
+							}
+							if (item.order_id === 0) {
+								item.resale_apply.concert_time = formatDate(item.resale_apply.concert_time);
+							}
+						});
+					});
+				}
+				
 			} else {
 				orderList({
 					prm: '2resale'
